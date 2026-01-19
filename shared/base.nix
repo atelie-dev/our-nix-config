@@ -53,9 +53,9 @@
   services.avahi.enable = true;
   services.resolved = {
     enable = true;
-    extraConfig = ''
-      MulticastDNS=yes
-    '';
+    settings.Resolve = {
+      MulticastDNS = true;
+    };
   };
 
   # Set your time zone.
