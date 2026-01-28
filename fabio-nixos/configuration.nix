@@ -8,6 +8,7 @@
   imports = [
     ../shared/base.nix
     ../shared/cli-tools.nix
+    ../shared/gui-tools.nix
     ./hardware-configuration.nix
     ./nvidia.nix
     ./packages.nix
@@ -32,6 +33,37 @@
     layout = "us";
     variant = "altgr-intl";
   };
+
+  # programs.niri.enable = true;
+  # programs.yazi = {
+  #   enable = true;
+  #   plugins = {
+  #     starship = pkgs.yaziPlugins.starship;
+  #     wl-clipboard = pkgs.yaziPlugins.wl-clipboard;
+  #     chmod = pkgs.yaziPlugins.chmod;
+  #     git = pkgs.yaziPlugins.git;
+  #   };
+  # };
+  # environment.systemPackages = with pkgs; [
+  #   noctalia-shell
+  #   xwayland-satellite
+  #   tokyonight-gtk-theme
+  #   swayimg
+  #   rose-pine-cursor
+  #   adwaita-icon-theme
+  #   nemo
+  #   fuzzel
+  #   gpu-screen-recorder
+  # ];
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     default_session = {
+  #       command = "${pkgs.tuigreet}/bin/tuigreet --cmd niri-session";
+  #       user = "greeter";
+  #     };
+  #   };
+  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

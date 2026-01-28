@@ -8,6 +8,7 @@
   imports = [
     ../shared/base.nix
     ../shared/cli-tools.nix
+    ../shared/gui-tools.nix
     ./hardware-configuration.nix
     ./packages.nix
     ./virtualization.nix
