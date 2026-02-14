@@ -16,6 +16,12 @@
     vim # Most popular clone of the VI editor
     yq-go # Portable command-line YAML processor
 
+    # Additional Development CLI (should also be present on each project devenv.nix)
+    awscli2 # Unified tool to manage your AWS services
+    kubectl # Kubernetes CLI
+    sops # Simple and flexible tool for managing secrets
+    uv # Extremely fast Python package installer and resolver, written in Rust
+
     # Other CLI
     age # Modern encryption tool with small explicit keys
     duf # Disk Usage/Free Utility
