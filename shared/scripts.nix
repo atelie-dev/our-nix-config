@@ -13,7 +13,7 @@
         set -exo pipefail
         cd /etc/nixos
         nix flake update
-        ${pkgs.nixos-rebuild-ng}/bin/nixos-rebuild switch --flake ".#$(hostname)" -v --log-format internal-json |& ${pkgs.nix-output-monitor}/bin/nom --json
+        ${pkgs.nixos-rebuild-ng}/bin/nixos-rebuild switch --flake ".#$(hostname)" -v --log-format internal-json "$@" |& ${pkgs.nix-output-monitor}/bin/nom --json
       '';
     })
 
