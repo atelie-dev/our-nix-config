@@ -16,6 +16,7 @@
     jetbrains-toolbox # Jetbrains Toolbox
     gimp3-with-plugins # GNU Image Manipulation Program
     mission-center # Monitor your CPU, Memory, Disk, Network and GPU usage
+    vscodium # Open source source code editor developed by Microsoft (VS Code without MS branding/telemetry/licensing)
 
     # LibreOffice and OnlyOffice
     onlyoffice-desktopeditors
