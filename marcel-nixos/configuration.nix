@@ -16,6 +16,13 @@
     ../shared/scripts.nix
   ];
 
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
+
   networking.hostName = "marcel-nixos"; # Define your hostname.
 
   # Configure keymap in X11
