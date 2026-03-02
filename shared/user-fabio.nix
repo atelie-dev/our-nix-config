@@ -113,6 +113,10 @@
 
         kitty = {
           enable = true;
+          extraConfig = ''
+            scrollback_lines 1000000
+            scrollback_pager_history_size 100000
+          '';
           keybindings = {
             "ctrl+shift+t" = "new_tab_with_cwd";
             "ctrl+shift+enter" = "launch --type=window --cwd=current";
