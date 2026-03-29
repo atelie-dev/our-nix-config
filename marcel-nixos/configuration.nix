@@ -14,14 +14,8 @@
     ./virtualization.nix
     ../shared/user-marcel.nix
     ../shared/scripts.nix
+    ../shared/no-sleep.nix
   ];
-
-  systemd.sleep.settings.Sleep = {
-    AllowSuspend = "no";
-    AllowHibernation = "no";
-    AllowHybridSleep = "no";
-    AllowSuspendThenHibernate = "no";
-  };
 
   networking.hostName = "marcel-nixos"; # Define your hostname.
 
