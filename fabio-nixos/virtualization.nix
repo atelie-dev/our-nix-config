@@ -4,6 +4,10 @@
     enable = true;
   };
 
+  virtualisation.waydroid = {
+    enable = true;
+  };
+
   # Docker
   virtualisation.docker = {
     enable = false;
