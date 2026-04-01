@@ -22,6 +22,15 @@
     polkitPolicyOwners = [ "fabio" ];
   };
 
+  programs.steam = {
+    enable = true;
+  };
+
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = true;
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
