@@ -24,8 +24,6 @@
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
   services.xserver.xkb.variant = "intl";
-  services.xserver.layout = "us";
-  services.xserver.xkbVariant = "intl";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
