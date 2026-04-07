@@ -16,6 +16,22 @@
   # Keep store blobs for old generations up to 30 days
   nix.gc.options = "--delete-older-than 30d";
 
+  # Adds several binary caches to speed up builds
+  nix.settings = {
+    substituters = [
+      "https://cache.nixos-cuda.org"
+      "https://cache.flox.dev"
+      "https://nix-community.cachix.org"
+      "https://cuda-maintainers.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+    ];
+  };
+
   # Limit the number of generations to show on boot
   boot.loader.systemd-boot.configurationLimit = 10;
 
@@ -31,7 +47,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Double inotify limits
   boot.kernel.sysctl = {
