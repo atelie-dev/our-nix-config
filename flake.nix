@@ -1,5 +1,5 @@
 {
-  description = "flake for fabio-nixos";
+  description = "flake for atelie-dev machines";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
