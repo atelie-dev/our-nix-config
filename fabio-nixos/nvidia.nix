@@ -18,6 +18,7 @@
   nixpkgs.config.cudaSupport = true;
   services.ollama = {
     enable = true;
+    home = "/mnt/magnetic/ollama";
   };
 
   environment.systemPackages = [
