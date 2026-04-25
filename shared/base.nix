@@ -19,10 +19,10 @@
   # Adds several binary caches to speed up builds
   nix.settings = {
     substituters = [
-      "https://cache.nixos-cuda.org"
-      "https://cache.flox.dev"
       "https://nix-community.cachix.org"
       "https://cuda-maintainers.cachix.org"
+      "https://cache.flox.dev"
+      "https://cache.nixos-cuda.org"
     ];
     trusted-public-keys = [
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
