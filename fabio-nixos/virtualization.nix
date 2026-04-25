@@ -28,6 +28,9 @@
     preferStaticEmulators = true; # Essential for Docker
   };
 
+  # Required to run k3d/k3s under rootless docker
+  systemd.services."user@".serviceConfig.Delegate = "cpu cpuset io memory pids";
+
   programs.virt-manager.enable = true;
 
   users.groups.libvirtd.members = ["fabio"];
