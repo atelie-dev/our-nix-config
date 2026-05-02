@@ -58,6 +58,9 @@
     "user.max_inotify_watches"      = 1048576;
   };
 
+  zramSwap.enable = true;
+  boot.tmp.useZram = true;
+
   # Enable networking
   networking.networkmanager.enable = true;
   networking.networkmanager.insertNameservers = [ "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
