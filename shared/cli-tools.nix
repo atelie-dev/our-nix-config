@@ -23,6 +23,14 @@
     sops # Simple and flexible tool for managing secrets
     uv # Extremely fast Python package installer and resolver, written in Rust
 
+    # System monitoring CLI
+    gtop # System monitoring dashboard for the terminal
+    iotop # Tool to find out the processes doing the most IO
+    iw # Tool to use nl80211
+    nethogs # Small 'net top' tool, grouping bandwidth by process
+    pciutils # Collection of programs for inspecting and manipulating configuration of PCI devices
+    wirelesstools # Wireless tools for Linux
+
     # Other CLI
     age # Modern encryption tool with small explicit keys
     duf # Disk Usage/Free Utility
