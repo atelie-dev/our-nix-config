@@ -14,8 +14,14 @@
   # Fix for the GTK4 freeze-on-close bug: https://forums.developer.nvidia.com/t/580-release-feedback-discussion/341205/20
   environment.sessionVariables.GSK_RENDERER = "ngl";
 
-  # Enables local LLMs
+  # Enables CUDA support, and add extra caches for CUDA packages
   nixpkgs.config.cudaSupport = true;
+  nix.settings.extra-substituters = [
+    "https://cuda-maintainers.cachix.org"
+    # "https://cache.nixos-cuda.org"
+  ];
+
+  # Enables local LLMs
   services.ollama = {
     enable = true;
     home = "/mnt/magnetic/ollama";
