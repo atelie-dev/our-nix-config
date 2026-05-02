@@ -16,12 +16,13 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/d70d5cb5-9d17-4c0f-9745-0a7d92de8615";
       fsType = "ext4";
+      options = [ "defaults" "noatime" "discard" ];
     };
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/7B51-5700";
       fsType = "vfat";
-      options = [ "umask=0077" ];
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   fileSystems."/home" =
@@ -31,6 +32,11 @@
 
   fileSystems."/mnt/magnetic" =
     { device = "/dev/mapper/vga-lva";
+      fsType = "ext4";
+    };
+
+  fileSystems."/mnt/ssd" =
+    { device = "/dev/disk/by-uuid/8dcebad5-47a4-41fe-a61b-201cf7338907";
       fsType = "ext4";
     };
 
