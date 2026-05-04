@@ -11,7 +11,6 @@
     megasync # Easy automated syncing between your computers and your MEGA Cloud Drive
     morewaita-icon-theme # Adwaita style extra icons theme for Gnome Shell
     vesktop # Alternate client for Discord with Vencord built-in
-    slack # Desktop client for Slack
     typora # Markdown editor, a markdown reader
   ];
 
