@@ -12,6 +12,8 @@
     morewaita-icon-theme # Adwaita style extra icons theme for Gnome Shell
     vesktop # Alternate client for Discord with Vencord built-in
     typora # Markdown editor, a markdown reader
+
+    btrfs-progs # Utilities for the btrfs filesystem
   ];
 
   # 1Password

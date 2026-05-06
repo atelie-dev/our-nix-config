@@ -28,16 +28,19 @@
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/b78be446-8645-4947-bb6e-49943a979d92";
       fsType = "ext4";
+      options = [ "defaults" "noatime" "discard" ];
     };
 
   fileSystems."/mnt/magnetic" =
     { device = "/dev/mapper/vga-lva";
       fsType = "ext4";
+      options = [ "defaults" "noatime" "nodiratime" ];
     };
 
   fileSystems."/mnt/ssd" =
-    { device = "/dev/disk/by-uuid/8dcebad5-47a4-41fe-a61b-201cf7338907";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/a9298542-4f8f-49a8-8489-a4fe21fa98b1";
+      fsType = "btrfs";
+      options = [ "defaults" "noatime" "discard=async" "compress=zstd:3" "space_cache=v2" "ssd" ];
     };
 
   swapDevices = [ ];
