@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   # Enables flakes and the nix command without the pesky experimental warnings
   nix.settings.experimental-features = [
@@ -151,4 +151,9 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Overlays
+  nixpkgs.overlays = [
+    inputs.devenv.overlays.default
+  ];
 }
