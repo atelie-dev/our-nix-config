@@ -59,9 +59,6 @@
       programs = {
         bash = {
           enable = true;
-          bashrcExtra = ''
-            eval "$(devenv hook bash)"
-          '';
         };
 
         broot.enable = true;
