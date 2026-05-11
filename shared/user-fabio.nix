@@ -81,7 +81,12 @@
       };
 
       programs = {
-        bash.enable = true;
+        bash = {
+          enable = true;
+          bashrcExtra = ''
+            eval "$(devenv hook bash)"
+          '';
+        };
 
         broot.enable = true;
         broot.enableBashIntegration = true;
