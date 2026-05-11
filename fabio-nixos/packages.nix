@@ -14,6 +14,7 @@
     typora # Markdown editor, a markdown reader
 
     btrfs-progs # Utilities for the btrfs filesystem
+    compsize # Find compression type/ratio on a file or set of files in the Btrfs filesystem
   ];
 
   # 1Password
