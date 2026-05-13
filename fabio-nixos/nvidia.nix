@@ -18,7 +18,7 @@
   nixpkgs.config.cudaSupport = true;
   nix.settings.extra-substituters = [
     "https://cuda-maintainers.cachix.org"
-    # "https://cache.nixos-cuda.org"
+    "https://cache.nixos-cuda.org"
   ];
 
   # Enables local LLMs
