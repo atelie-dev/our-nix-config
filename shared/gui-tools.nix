@@ -18,6 +18,7 @@
     mission-center # Monitor your CPU, Memory, Disk, Network and GPU usage
     slack # Desktop client for Slack
     vscodium # Open source source code editor developed by Microsoft (VS Code without MS branding/telemetry/licensing)
+    warp-terminal # Rust-based terminal
 
     # LibreOffice and OnlyOffice
     onlyoffice-desktopeditors
