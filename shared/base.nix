@@ -146,4 +146,17 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Override gpaste to add support for newer GNOME Shell versions
+  nixpkgs.overlays = [
+    (final: prev: {
+      gpaste = prev.gpaste.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          substituteInPlace src/gnome-shell/metadata.json.in --replace-fail \
+            '"shell-version": [ "45", "46", "47", "48", "49" ],' \
+            '"shell-version": [ "45", "46", "47", "48", "49", "50" ],'
+        '';
+      });
+    })
+  ];
 }
