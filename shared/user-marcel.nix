@@ -1,6 +1,12 @@
 # Configuration related to the existing users and the home-manager configuration.
 
-{ inputs, lib, config, pkgs, ... }:
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [ inputs.home-manager.nixosModules.home-manager ];
 
@@ -37,6 +43,8 @@
       flameshot-gui = pkgs.writeShellScriptBin "flameshot-gui" "${pkgs.flameshot}/bin/flameshot gui";
     in
     {
+      imports = [ ./hm-opencode.nix ];
+
       home.packages = [ defaultMonoFont.package ];
 
       # Changes the default font
