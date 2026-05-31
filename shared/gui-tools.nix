@@ -15,6 +15,7 @@
     google-chrome # Freeware web browser developed by Google
     jetbrains-toolbox # Jetbrains Toolbox
     gimp3-with-plugins # GNU Image Manipulation Program
+    inkscape-with-extensions # Vector graphics editor
     mission-center # Monitor your CPU, Memory, Disk, Network and GPU usage
     slack # Desktop client for Slack
     vscodium # Open source source code editor developed by Microsoft (VS Code without MS branding/telemetry/licensing)
