@@ -36,6 +36,8 @@
       };
     in
     {
+      imports = [ ./hm-opencode.nix ];
+
       home.packages = [ defaultMonoFont.package ];
 
       fonts.fontconfig.enable = true;
