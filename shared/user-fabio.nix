@@ -142,6 +142,7 @@
         kitty = {
           enable = true;
           extraConfig = ''
+            auto_reload_config -1
             scrollback_lines 1000000
             scrollback_pager_history_size 100000
           '';
