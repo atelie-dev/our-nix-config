@@ -9,6 +9,7 @@
     devenv # Fast, Declarative, Reproducible, and Composable Developer Environments
     difftastic # Syntax-aware diff
     docker-buildx # Docker CLI plugin for extended build capabilities with BuildKit
+    gh # GitHub CLI tool
     git # Distributed version control system
     gnumake # Tool to control the generation of non-source files from sources
     jq # Lightweight and flexible command-line JSON processor
