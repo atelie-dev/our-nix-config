@@ -9,6 +9,8 @@
     solaar.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    mcp-nixos.url = "github:utensils/mcp-nixos";
+    mcp-nixos.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -18,11 +20,14 @@
       home-manager,
       solaar,
       nix-index-database,
+      mcp-nixos,
     }@inputs:
     let
       inherit (self) outputs;
     in
     {
+      nixpkgs.overlays = [ mcp-nixos.overlays.default ];
+
       nixosConfigurations = {
         fabio-nixos = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };

@@ -9,6 +9,14 @@
       Never interact directly with Git. Orient and ask the user to perform commits or any other git operation.
 
       When writing or suggesting new code, evaluate the effort using the skill `evaluate-new-dep`.
+
+      ## NixOS environment
+
+      Always remember we're running on a NixOS environment. This means:
+
+      * If a command does not exist, it can be run with `devenv shell`, the "comma" command, or `nix-shell -p`.
+      * If a file is not writable, stop and ask how to proceed.
+      * There's a nixos MCP running for anything NixOS related.
     '';
     skills = {
       evaluate-new-dep = ''
@@ -25,7 +33,17 @@
       '';
     };
     settings = {
+      plugin = [ "@simonwjackson/opencode-direnv" ];
       model = "ollama-cloud/deepseek-v4-flash";
+      agent = {
+        build = {
+          model = "opencode-go/kimi-k2.7-code";
+        };
+        plan = {
+          model = "ollama-cloud/deepseek-v4-flash";
+          variant = "high";
+        };
+      };
       provider = {
         ollama = {
           name = "Ollama";
@@ -41,6 +59,11 @@
           type = "remote";
           url = "https://mcp.atlassian.com/v1/mcp/authv2";
           enabled = false;
+        };
+        nixos = {
+          type = "local";
+          command = [ "mcp-nixos" ];
+          enabled = true;
         };
       };
     };

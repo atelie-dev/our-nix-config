@@ -26,7 +26,6 @@
       "kvm"
     ];
     packages = with pkgs; [
-      rtk # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands
     ];
     subUidRanges = [
       {

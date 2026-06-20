@@ -31,6 +31,10 @@
     pciutils # Collection of programs for inspecting and manipulating configuration of PCI devices
     wirelesstools # Wireless tools for Linux
 
+    # AI related
+    mcp-nixos # MCP server for NixOS
+    rtk # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands
+
     # Other CLI
     age # Modern encryption tool with small explicit keys
     duf # Disk Usage/Free Utility
