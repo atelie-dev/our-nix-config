@@ -53,7 +53,20 @@
           };
         };
       };
-      lsp = true;
+      lsp = {
+        pyrefly = {
+          enabled = true;
+          command = [
+            "uvx"
+            "pyrefly"
+            "lsp"
+          ];
+          extensions = [
+            ".py"
+            ".pyi"
+          ];
+        };
+      };
       mcp = {
         atlassian = {
           type = "remote";
