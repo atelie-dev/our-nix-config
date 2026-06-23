@@ -146,21 +146,4 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # Override gpaste to add support for newer GNOME Shell versions
-  nixpkgs.overlays = [
-    (final: prev: {
-      gpaste = prev.gpaste.overrideAttrs (finalAttrs: old: {
-        version = "45.6";
-        postPatch = ''
-          substituteInPlace src/libgpaste/gpaste/gpaste-settings.c \
-            --subst-var-by gschemasCompiled ${pkgs.glib.makeSchemaPath (placeholder "out") "${finalAttrs.pname}-${finalAttrs.version}"}
-        '';
-        src = pkgs.fetchurl {
-          url = "https://www.imagination-land.org/files/gpaste/GPaste-${finalAttrs.version}.tar.xz";
-          hash = "sha256-B7fzDKkpsNgwij99vZt4D8lzSqqf5kZPNT+FomeMnMA=";
-        };
-      });
-    })
-  ];
 }
