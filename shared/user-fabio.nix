@@ -144,6 +144,7 @@
             auto_reload_config -1
             scrollback_lines 1000000
             scrollback_pager_history_size 100000
+            font_family AdwaitaMono Nerd Font
           '';
           keybindings = {
             "ctrl+shift+t" = "new_tab_with_cwd";
