@@ -37,7 +37,7 @@
       model = "ollama-cloud/deepseek-v4-flash";
       agent = {
         build = {
-          model = "opencode-go/kimi-k2.7-code";
+          model = "ollama-cloud/deepseek-v4-flash";
         };
         plan = {
           model = "ollama-cloud/deepseek-v4-flash";
