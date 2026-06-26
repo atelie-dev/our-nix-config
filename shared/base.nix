@@ -20,7 +20,7 @@
   nix.settings = {
     substituters = [
       "https://nix-community.cachix.org"
-      "https://cache.flox.dev"
+      "https://cache.flox.dev?priority=42"
     ];
     trusted-public-keys = [
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
