@@ -78,6 +78,14 @@
           command = [ "mcp-nixos" ];
           enabled = true;
         };
+        firebase-mcp-server = {
+          type = "local";
+          command = [
+            "firebase"
+            "mcp"
+          ];
+          enabled = false;
+        };
       };
     };
   };
