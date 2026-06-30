@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 {
   # Enables flakes and the nix command without the pesky experimental warnings
   nix.settings.experimental-features = [
@@ -49,11 +54,11 @@
 
   # Double inotify limits
   boot.kernel.sysctl = {
-    "fs.inotify.max_queued_events"  =   32768;
+    "fs.inotify.max_queued_events" = 32768;
     "fs.inotify.max_user_instances" = 1048576;
-    "fs.inotify.max_user_watches"   = 1048576;
-    "user.max_inotify_instances"    = 1048576;
-    "user.max_inotify_watches"      = 1048576;
+    "fs.inotify.max_user_watches" = 1048576;
+    "user.max_inotify_instances" = 1048576;
+    "user.max_inotify_watches" = 1048576;
   };
 
   zramSwap.enable = true;
@@ -61,7 +66,11 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.networkmanager.insertNameservers = [ "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
+  networking.networkmanager.insertNameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+    "8.8.4.4"
+  ];
   networking.networkmanager.connectionConfig."connection.mdns" = 2;
   networking.networkmanager.plugins = [
     pkgs.networkmanager-openconnect
@@ -154,4 +163,9 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Allow some insecure packages
+  nixpkgs.config.permittedInsecurePackages = [
+    "pnpm-10.29.2"
+  ];
 }
