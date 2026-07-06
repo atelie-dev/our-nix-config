@@ -115,6 +115,7 @@
 
         fzf.enable = true;
         fzf.enableBashIntegration = true;
+        fzf.historyWidget.command = "";
 
         mcfly.enable = true;
         mcfly.fzf.enable = true;

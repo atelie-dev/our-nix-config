@@ -1,6 +1,12 @@
 # Configuration related to the existing users and the home-manager configuration.
 
-{ inputs, lib, config, pkgs, ... }:
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [ inputs.home-manager.nixosModules.home-manager ];
 
@@ -68,6 +74,7 @@
 
         fzf.enable = true;
         fzf.enableBashIntegration = true;
+        fzf.historyWidget.command = "";
 
         mcfly.enable = true;
         mcfly.fzf.enable = true;
