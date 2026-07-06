@@ -43,7 +43,7 @@
 
   home-manager.useGlobalPkgs = true;
   home-manager.users.fabio =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     let
       defaultMonoFont = {
         name = "AdwaitaMono Nerd Font Regular";
@@ -153,6 +153,14 @@
             "ctrl+k" = "clear_terminal to_cursor_scroll active";
             "ctrl+shift+k" = "combine : clear_terminal scroll active : clear_terminal scrollback active";
           };
+        };
+
+        firefox = {
+          enable = true;
+          configPath = "${config.xdg.configHome}/mozilla/firefox";
+          nativeMessagingHosts = [
+            pkgs.gnome-browser-connector
+          ];
         };
       };
 
