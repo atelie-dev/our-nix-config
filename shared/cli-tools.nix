@@ -45,5 +45,6 @@
     psmisc # Set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
     broot # Interactive tree view, a fuzzy search, a balanced BFS descent and customizable commands
+    unzip # Extraction utility for archives compressed in .zip format
   ];
 }

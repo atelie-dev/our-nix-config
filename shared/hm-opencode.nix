@@ -1,8 +1,25 @@
-{ lib, pkgs, ... }:
-
 {
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+{
+  # The opencode-plugin-ast-lsp looks for binary "sg" in its own cache
+  # (~/.cache/opencode-plugin-ast-lsp/bin/sg), not the system PATH.
+  # On NixOS "sg" is the shadow-utils group switch command, so we
+  # symlink the Nix-installed ast-grep into that cache directory.
+  home.activation.populateAstGrepCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    cache_dir="${config.home.homeDirectory}/.cache/opencode-plugin-ast-lsp/bin"
+    mkdir -p "$cache_dir"
+    ln -sf "${pkgs.ast-grep}/bin/ast-grep" "$cache_dir/sg"
+  '';
+
   programs.opencode = {
     enable = true;
+    extraPackages = [
+      pkgs.nodejs_24
+    ];
     context = ''
       # General rules
 
@@ -33,15 +50,36 @@
       '';
     };
     settings = {
-      plugin = [ "@simonwjackson/opencode-direnv" ];
+      plugin = [
+        "@simonwjackson/opencode-direnv"
+        "opencode-plugin-ast-lsp"
+        "@tianhuil/opencode-hashlines"
+      ];
       model = "ollama-cloud/deepseek-v4-flash";
       agent = {
         build = {
           model = "ollama-cloud/deepseek-v4-flash";
+          variant = "high";
+          prompt = ''
+            Always use `hashread` to read files and `hashedit` to edit them. Never use `edit` or `str_replace`.
+            The hashread output format is `N:hh|line` — pass those hashes back to hashedit as anchors.
+          '';
         };
         plan = {
-          model = "ollama-cloud/deepseek-v4-flash";
-          variant = "high";
+          model = "ollama-cloud/glm-5.2";
+        };
+        explore = {
+          mode = "subagent";
+          permission = {
+            edit = "deny";
+            write = "deny";
+          };
+          prompt = ''
+            You are a codebase exploration agent. Your task is to analyze the code structure.
+            When searching for patterns, function definitions, or class usages, use the `ast_grep_search` tool
+            to find them based on syntax trees, not just text. This will give more accurate results.
+            Do not make any edits.
+          '';
         };
       };
       provider = {
