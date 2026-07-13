@@ -32,6 +32,7 @@
   };
 
   home-manager.useGlobalPkgs = true;
+  home-manager.sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
   home-manager.users.marcel =
     { pkgs, ... }:
     let

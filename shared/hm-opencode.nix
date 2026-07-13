@@ -15,6 +15,12 @@
     ln -sf "${pkgs.ast-grep}/bin/ast-grep" "$cache_dir/sg"
   '';
 
+  sops = {
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    defaultSopsFile = ./../secrets/firecrawl.yaml;
+    secrets.firecrawl_api_key = {};
+  };
+
   programs.opencode = {
     enable = true;
     extraPackages = [
@@ -123,6 +129,15 @@
             "mcp"
           ];
           enabled = false;
+        };
+        firecrawl = {
+          type = "remote";
+          url = "https://mcp.firecrawl.dev/v2/mcp";
+          enabled = true;
+          headers = {
+            Authorization = "Bearer {file:${config.home.homeDirectory}/.config/sops-nix/secrets/firecrawl_api_key}";
+          };
+          oauth = false;
         };
       };
     };

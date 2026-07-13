@@ -1,0 +1,11 @@
+keys:
+  - &fabio age19hz7jrh0janjvy7we2kxs9ky57k9djxtwvff9vavranu2psy6dqsh2vx70
+  - &marcel age1f8m0tlm3j7a6dy93vmz2mpvqtl34ua600w8s8j6z4akueqkk6cvq9dydwz
+  - &tania age1ftkfz2vhtyunrjspkl8945xjg96mgjq4ae4cnwr2ax3yqfr50svsnptcwx
+creation_rules:
+  - path_regex: secrets/.*\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *fabio
+      - *marcel
+      - *tania

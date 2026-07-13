@@ -11,6 +11,8 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     mcp-nixos.url = "github:utensils/mcp-nixos";
     mcp-nixos.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -21,6 +23,7 @@
       solaar,
       nix-index-database,
       mcp-nixos,
+      sops-nix,
     }@inputs:
     let
       inherit (self) outputs;
