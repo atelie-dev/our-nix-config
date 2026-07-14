@@ -59,17 +59,13 @@
       plugin = [
         "@simonwjackson/opencode-direnv"
         "opencode-plugin-ast-lsp"
-        "@tianhuil/opencode-hashlines"
+        "@angdrew/opencode-hashline-plugin"
       ];
       model = "ollama-cloud/deepseek-v4-flash";
       agent = {
         build = {
           model = "ollama-cloud/deepseek-v4-flash";
           variant = "high";
-          prompt = ''
-            Always use `hashread` to read files and `hashedit` to edit them. Never use `edit` or `str_replace`.
-            The hashread output format is `N:hh|line` — pass those hashes back to hashedit as anchors.
-          '';
         };
         plan = {
           model = "ollama-cloud/glm-5.2";
