@@ -1,5 +1,15 @@
-{ pkgs, ... }:
 {
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  nixpkgs.overlays = [
+    (_final: prev: {
+      basecamp-cli = inputs.basecamp-cli.packages.${prev.system}.basecamp;
+    })
+  ];
+
   # Sets vim as the default editor for all users
   environment.sessionVariables.EDITOR = "vim";
 
@@ -34,6 +44,7 @@
     # AI related
     mcp-nixos # MCP server for NixOS
     rtk # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands
+    basecamp-cli
 
     # Other CLI
     age # Modern encryption tool with small explicit keys
