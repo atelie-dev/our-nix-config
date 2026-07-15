@@ -56,6 +56,7 @@
       '';
     };
     settings = {
+      default_agent = "OpenCoder";
       plugin = [
         "@simonwjackson/opencode-direnv"
         "opencode-plugin-ast-lsp"
