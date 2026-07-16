@@ -10,7 +10,6 @@
     # Generic GUI tools
     megasync # Easy automated syncing between your computers and your MEGA Cloud Drive
     morewaita-icon-theme # Adwaita style extra icons theme for Gnome Shell
-    vesktop # Alternate client for Discord with Vencord built-in
     typora # Markdown editor, a markdown reader
 
     btrfs-progs # Utilities for the btrfs filesystem
