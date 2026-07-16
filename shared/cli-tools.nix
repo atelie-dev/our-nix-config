@@ -6,7 +6,7 @@
 {
   nixpkgs.overlays = [
     (_final: prev: {
-      basecamp-cli = inputs.basecamp-cli.packages.${prev.system}.basecamp;
+      basecamp-cli = inputs.basecamp-cli.packages.${prev.stdenv.hostPlatform.system}.basecamp;
     })
   ];
 
