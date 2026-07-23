@@ -34,7 +34,8 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             solaar.nixosModules.default
-            ./fabio-nixos/configuration.nix
+            ./machines/fabio-nixos/configuration.nix
+            ./users/fabio.nix
             nix-index-database.nixosModules.default
             { programs.nix-index-database.comma.enable = true; }
           ];
@@ -42,7 +43,8 @@
         marcel-nixos = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./marcel-nixos/configuration.nix
+            ./machines/marcel-nixos/configuration.nix
+            ./users/marcel.nix
             nix-index-database.nixosModules.default
             { programs.nix-index-database.comma.enable = true; }
           ];
@@ -51,7 +53,17 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             solaar.nixosModules.default
-            ./tania-nixos/configuration.nix
+            ./machines/tania-nixos/configuration.nix
+            ./users/tania.nix
+            nix-index-database.nixosModules.default
+            { programs.nix-index-database.comma.enable = true; }
+          ];
+        };
+        zerbin-nixos = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./machines/zerbin-nixos/configuration.nix
+            ./users/zerbin_b.nix
             nix-index-database.nixosModules.default
             { programs.nix-index-database.comma.enable = true; }
           ];
@@ -60,7 +72,8 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             solaar.nixosModules.default
-            ./lg-gram-i7/configuration.nix
+            ./machines/lg-gram-i7/configuration.nix
+            ./users/tania.nix
             nix-index-database.nixosModules.default
             { programs.nix-index-database.comma.enable = true; }
           ];

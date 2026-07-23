@@ -6,15 +6,14 @@
 
 {
   imports = [
-    ../shared/base.nix
-    ../shared/cli-tools.nix
-    ../shared/gui-tools.nix
+    ../../shared/base.nix
+    ../../shared/cli-tools.nix
+    ../../shared/gui-tools.nix
     ./hardware-configuration.nix
     ../tania-nixos/packages.nix
     ../tania-nixos/virtualization.nix
-    ../shared/user-tania.nix
-    ../shared/scripts.nix
-    ../shared/logitech.nix
+    ../../shared/scripts.nix
+    ../../shared/logitech.nix
   ];
 
   networking.hostName = "lg-gram-i7"; # Define your hostname.

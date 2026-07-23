@@ -12,12 +12,12 @@
 
   nix.settings.trusted-users = [
     "root"
-    "tania"
+    "marcel"
   ];
 
-  users.users.tania = {
+  users.users.marcel = {
     isNormalUser = true;
-    description = "Tania Nielsen";
+    description = "Marcel Nielsen";
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -25,7 +25,7 @@
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGO49ie+2Uy4jBeO7VzRoQp58LeSyg5lvtKiQRPXBbre fabio@fabio-nixos"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMF13eZg5vciuTVsU+sTMdfsjlzraxBGOknHyTayPTYc marcel@marcel-nixos"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqgwhDkBgJECfyyRmKkFd+rCYOpeJpQ/Ucgv1boCHIW tania@tania-nixos"
     ];
     packages = with pkgs; [
     ];
@@ -33,7 +33,7 @@
 
   home-manager.useGlobalPkgs = true;
   home-manager.sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
-  home-manager.users.tania =
+  home-manager.users.marcel =
     { pkgs, ... }:
     let
       defaultMonoFont = {
@@ -41,17 +41,38 @@
         package = pkgs.nerd-fonts.adwaita-mono;
         size = 11;
       };
+      flameshot-gui = pkgs.writeShellScriptBin "flameshot-gui" "${pkgs.flameshot}/bin/flameshot gui";
     in
     {
-      imports = [ ./hm-opencode.nix ];
+      imports = [ ../shared/hm-opencode.nix ];
 
       home.packages = [ defaultMonoFont.package ];
 
+      # Changes the default font
       fonts.fontconfig.enable = true;
-
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           monospace-font-name = "${defaultMonoFont.name} ${toString defaultMonoFont.size}";
+        };
+      };
+
+      # Adds flameshot as the default PtrScr keybinding
+      dconf.settings = {
+        # Disables the default screenshot interface
+        "org/gnome/shell/keybindings" = {
+          show-screenshot-ui = [ ];
+        };
+        # Sets the new keybindings
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          custom-keybindings = [
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          ];
+        };
+        # Defines the new shortcut
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+          binding = "Print";
+          command = "${flameshot-gui}/bin/flameshot-gui";
+          name = "Flameshot";
         };
       };
 
@@ -61,6 +82,7 @@
       xdg.autostart = {
         enable = true;
         entries = [
+          "${pkgs.jetbrains-toolbox}/share/applications/jetbrains-toolbox.desktop"
           "${pkgs._1password-gui}/share/applications/1password.desktop"
         ];
       };

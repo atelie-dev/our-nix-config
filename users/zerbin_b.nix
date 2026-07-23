@@ -43,7 +43,7 @@
       flameshot-gui = pkgs.writeShellScriptBin "flameshot-gui" "${pkgs.flameshot}/bin/flameshot gui";
     in
     {
-      imports = [ ./hm-opencode.nix ];
+      imports = [ ../shared/hm-opencode.nix ];
 
       home.packages = [ defaultMonoFont.package ];
 

@@ -6,15 +6,14 @@
 
 {
   imports = [
-    ../shared/base.nix
-    ../shared/cli-tools.nix
-    ../shared/gui-tools.nix
+    ../../shared/base.nix
+    ../../shared/cli-tools.nix
+    ../../shared/gui-tools.nix
     ./hardware-configuration.nix
     ./packages.nix
     ./virtualization.nix
-    ../shared/user-marcel.nix
-    ../shared/scripts.nix
-    ../shared/no-sleep.nix
+    ../../shared/scripts.nix
+    ../../shared/no-sleep.nix
   ];
 
   networking.hostName = "marcel-nixos"; # Define your hostname.

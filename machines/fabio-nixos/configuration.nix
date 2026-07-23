@@ -6,20 +6,22 @@
 
 {
   imports = [
-    ../shared/base.nix
-    ../shared/cli-tools.nix
-    ../shared/gui-tools.nix
+    ../../shared/base.nix
+    ../../shared/cli-tools.nix
+    ../../shared/gui-tools.nix
     ./hardware-configuration.nix
     ./nvidia.nix
     ./packages.nix
     ./virtualization.nix
-    ../shared/user-fabio.nix
-    ../shared/scripts.nix
-    ../shared/logitech.nix
-    ../shared/no-sleep.nix
+    ../../shared/scripts.nix
+    ../../shared/logitech.nix
+    ../../shared/no-sleep.nix
   ];
 
   networking.hostName = "fabio-nixos"; # Define your hostname.
+  networking.extraHosts = ''
+    10.1.8.194 opera.santacasa.dominio qota.santacasa.dominio argocd.synnax.santacasa.dominio
+  '';
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure keymap in X11

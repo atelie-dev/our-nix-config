@@ -6,24 +6,23 @@
 
 {
   imports = [
-    ../shared/base.nix
-    ../shared/cli-tools.nix
-    ../shared/gui-tools.nix
+    ../../shared/base.nix
+    ../../shared/cli-tools.nix
+    ../../shared/gui-tools.nix
     ./hardware-configuration.nix
     ./packages.nix
     ./virtualization.nix
-    ../shared/user-tania.nix
-    ../shared/scripts.nix
-    ../shared/logitech.nix
-    ../shared/no-sleep.nix
+    ../../shared/scripts.nix
+    ../../shared/no-sleep.nix
   ];
 
-  networking.hostName = "tania-nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "zerbin-nixos"; # Define your hostname.
 
   # Configure keymap in X11
-  services.xserver.xkb.layout = "us";
-  services.xserver.xkb.variant = "intl";
+  services.xserver.xkb = {
+    layout = "br";
+    variant = "";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

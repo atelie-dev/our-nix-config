@@ -12,29 +12,39 @@
 
   nix.settings.trusted-users = [
     "root"
-    "marcel"
+    "fabio"
   ];
 
-  users.users.marcel = {
+  users.users.fabio = {
     isNormalUser = true;
-    description = "Marcel Nielsen";
+    description = "Fábio Batista";
     extraGroups = [
       "networkmanager"
       "wheel"
       "docker"
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGO49ie+2Uy4jBeO7VzRoQp58LeSyg5lvtKiQRPXBbre fabio@fabio-nixos"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqgwhDkBgJECfyyRmKkFd+rCYOpeJpQ/Ucgv1boCHIW tania@tania-nixos"
+      "podman"
+      "kvm"
     ];
     packages = with pkgs; [
+    ];
+    subUidRanges = [
+      {
+        startUid = 100000;
+        count = 65536;
+      }
+    ];
+    subGidRanges = [
+      {
+        startGid = 100000;
+        count = 65536;
+      }
     ];
   };
 
   home-manager.useGlobalPkgs = true;
   home-manager.sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
-  home-manager.users.marcel =
-    { pkgs, ... }:
+  home-manager.users.fabio =
+    { pkgs, config, ... }:
     let
       defaultMonoFont = {
         name = "AdwaitaMono Nerd Font Regular";
@@ -44,7 +54,7 @@
       flameshot-gui = pkgs.writeShellScriptBin "flameshot-gui" "${pkgs.flameshot}/bin/flameshot gui";
     in
     {
-      imports = [ ./hm-opencode.nix ];
+      imports = [ ../shared/hm-opencode.nix ];
 
       home.packages = [ defaultMonoFont.package ];
 
@@ -53,6 +63,16 @@
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           monospace-font-name = "${defaultMonoFont.name} ${toString defaultMonoFont.size}";
+        };
+      };
+
+      # Enables fractional scaling
+      dconf.settings = {
+        "org/gnome/mutter" = {
+          experimental-features = [
+            "scale-monitor-framebuffer"
+            "xwayland-native-scaling"
+          ];
         };
       };
 
@@ -82,7 +102,6 @@
       xdg.autostart = {
         enable = true;
         entries = [
-          "${pkgs.jetbrains-toolbox}/share/applications/jetbrains-toolbox.desktop"
           "${pkgs._1password-gui}/share/applications/1password.desktop"
         ];
       };
@@ -123,11 +142,37 @@
 
         kitty = {
           enable = true;
+          extraConfig = ''
+            auto_reload_config -1
+            scrollback_lines 1000000
+            scrollback_pager_history_size 100000
+            font_family AdwaitaMono Nerd Font
+          '';
           keybindings = {
             "ctrl+shift+t" = "new_tab_with_cwd";
             "ctrl+shift+enter" = "launch --type=window --cwd=current";
             "ctrl+k" = "clear_terminal to_cursor_scroll active";
             "ctrl+shift+k" = "combine : clear_terminal scroll active : clear_terminal scrollback active";
+          };
+        };
+
+        firefox = {
+          enable = true;
+          configPath = "${config.xdg.configHome}/mozilla/firefox";
+          nativeMessagingHosts = [
+            pkgs.gnome-browser-connector
+          ];
+        };
+      };
+
+      services.podman = {
+        enable = true;
+        settings.policy = {
+          default = [ { type = "insecureAcceptAnything"; } ];
+          transports = {
+            docker-daemon = {
+              "" = [ { type = "insecureAcceptAnything"; } ];
+            };
           };
         };
       };
