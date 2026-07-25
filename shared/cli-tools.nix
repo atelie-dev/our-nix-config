@@ -43,8 +43,7 @@
 
     # AI related
     mcp-nixos # MCP server for NixOS
-    rtk # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands
-    basecamp-cli
+    basecamp-cli # Basecamp CLI and Agent Skills
 
     # Other CLI
     age # Modern encryption tool with small explicit keys
