@@ -21,6 +21,38 @@
     "https://cache.nixos-cuda.org"
   ];
 
+  # Temporary workaround for https://github.com/NixOS/nixpkgs/pull/545542
+  # CMake 4.3.4 requires bin/nvcc to be inside CUDAToolkit_ROOT, but the CUDA
+  # setup hook only collected host-side deps and missed nvcc (in
+  # nativeBuildInputs). Override the hook to append nvcc's directory so
+  # FindCUDAToolkit can locate it. Remove this overlay once the PR is in our
+  # nixpkgs pin.
+  nixpkgs.overlays = [
+    (_final: prev: {
+      cudaPackages = prev.cudaPackages.overrideScope (newFinal: _newPrev: {
+        setupCudaHook = newFinal.callPackage (
+          {
+            lib,
+            makeSetupHook,
+            backendStdenv,
+          }:
+          makeSetupHook {
+            name = "setup-cuda-hook";
+            substitutions.setupCudaHook = placeholder "out";
+            substitutions.ccFullPath = "${backendStdenv.cc}/bin/${backendStdenv.cc.targetPrefix}c++";
+            meta.license = lib.licenses.mit;
+          }
+          ./setup-cuda-hook-patched.sh
+        ) { };
+      });
+      # Workaround for onnxruntime v1.27.1 upstream bug: sharded_moe.h
+      # references a relocated ft_moe/moe_kernel.h that doesn't exist in the
+      # release tarball. Disable CUDA for onnxruntime so firefox (which uses
+      # it for translation) falls back to CPU.
+      onnxruntime = prev.onnxruntime.override { cudaSupport = false; };
+    })
+  ];
+
   # Enables local LLMs
   services.ollama = {
     enable = true;
