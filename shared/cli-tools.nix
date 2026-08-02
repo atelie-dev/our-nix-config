@@ -37,6 +37,7 @@
     gtop # System monitoring dashboard for the terminal
     iotop # Tool to find out the processes doing the most IO
     iw # Tool to use nl80211
+    lm_sensors # Tools for reading hardware sensors - maintained fork
     nethogs # Small 'net top' tool, grouping bandwidth by process
     pciutils # Collection of programs for inspecting and manipulating configuration of PCI devices
     wirelesstools # Wireless tools for Linux
