@@ -11,8 +11,11 @@
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Fix for the GTK4 freeze-on-close bug: https://forums.developer.nvidia.com/t/580-release-feedback-discussion/341205/20
-  environment.sessionVariables.GSK_RENDERER = "ngl";
+  environment.sessionVariables = {
+    GSK_RENDERER = "ngl"; # Fix for the GTK4 freeze-on-close bug: https://forums.developer.nvidia.com/t/580-release-feedback-discussion/341205/20
+    __GL_GSYNC_ALLOWED = "0";
+    __GL_VRR_ALLOWED = "0";
+  };
 
   # Enables CUDA support, and add extra caches for CUDA packages
   nixpkgs.config.cudaSupport = true;
