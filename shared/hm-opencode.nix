@@ -62,10 +62,10 @@
         "opencode-plugin-ast-lsp"
         "@angdrew/opencode-hashline-plugin"
       ];
-      model = "ollama-cloud/deepseek-v4-flash";
+      model = "ollama-cloud/deepseek-v4-flash:0731";
       agent = {
         build = {
-          model = "ollama-cloud/deepseek-v4-flash";
+          model = "ollama-cloud/deepseek-v4-flash:0731";
           variant = "high";
         };
         plan = {
