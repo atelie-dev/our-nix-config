@@ -95,6 +95,8 @@
         };
       };
       lsp = {
+        # Disable the built-in pyright server so pyrefly is the sole Python LSP.
+        pyright.disabled = true;
         pyrefly = {
           enabled = true;
           command = [
