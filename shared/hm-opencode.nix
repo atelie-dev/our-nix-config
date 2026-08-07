@@ -19,6 +19,13 @@
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     defaultSopsFile = ./../secrets/firecrawl.yaml;
     secrets.firecrawl_api_key = {};
+    # Ollama Cloud API key for the second provider account, stored in its
+    # own SOPS-encrypted file and read via {file:...} interpolation.
+    # The primary `ollama-cloud` provider is left untouched and keeps using
+    # the key stored in ~/.local/share/opencode/auth.json via /connect.
+    secrets.ollama_cloud_api_key = {
+      sopsFile = ./../secrets/ollama-cloud.yaml;
+    };
   };
 
   programs.opencode = {
@@ -67,12 +74,25 @@
         build = {
           model = "ollama-cloud/deepseek-v4-flash:0731";
           variant = "high";
+          options.fallback = [
+            "ollama-cloud-2/deepseek-v4-flash:0731"
+            "deepseek/deepseek-v4-flash"
+          ];
         };
         plan = {
           model = "ollama-cloud/glm-5.2";
+          options.fallback = [
+            "ollama-cloud-2/glm-5.2"
+            "google/gemini-3.5-flash"
+            "openrouter/nvidia/nemotron-3-super-120b-a12b"
+          ];
         };
         explore = {
           mode = "subagent";
+          options.fallback = [
+            "ollama-cloud-2/deepseek-v4-flash:0731"
+            "deepseek/deepseek-v4-flash"
+          ];
           permission = {
             edit = "deny";
             write = "deny";
@@ -93,6 +113,52 @@
             baseURL = "http://127.0.0.1:11434/v1";
           };
         };
+        # Second Ollama Cloud account — API key read from the SOPS-decrypted
+        # file at ~/.config/sops-nix/secrets/ollama_cloud_api_key.
+        # The primary `ollama-cloud` provider is left as the built-in, which
+        # authenticates via ~/.local/share/opencode/auth.json (/connect).
+        # Models on this provider are selected as `ollama-cloud-2/<model>`.
+        # `models` must be declared explicitly: `ollama-cloud-2` is a custom
+        # provider id that models.dev does not know, so the /model picker
+        # stays empty without this block. Metadata mirrors the models.dev
+        # catalog for the built-in `ollama-cloud` provider.
+        ollama-cloud-2 = {
+          name = "Ollama Cloud 2";
+          npm = "@ai-sdk/openai-compatible";
+          options = {
+            baseURL = "https://ollama.com/v1";
+            apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/ollama_cloud_api_key}";
+          };
+          models = {
+            "deepseek-v4-flash:0731" = {
+              name = "DeepSeek V4 Flash 0731";
+              family = "deepseek-flash";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              limit = {
+                context = 1048576;
+                output = 1048576;
+              };
+            };
+            "glm-5.2" = {
+              name = "GLM-5.2";
+              family = "glm";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              interleaved = {
+                field = "reasoning_content";
+              };
+              temperature = true;
+              limit = {
+                context = 976000;
+                output = 131072;
+              };
+            };
+          };
+        };
       };
       lsp = {
         # Disable the built-in pyright server so pyrefly is the sole Python LSP.
@@ -107,6 +173,16 @@
           extensions = [
             ".py"
             ".pyi"
+          ];
+        };
+        postgres-language-server = {
+          enabled = true;
+          command = [
+            "postgres-language-server"
+            "lsp-proxy"
+          ];
+          extensions = [
+            ".sql"
           ];
         };
       };

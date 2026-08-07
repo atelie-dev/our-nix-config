@@ -24,6 +24,7 @@
     gnumake # Tool to control the generation of non-source files from sources
     jq # Lightweight and flexible command-line JSON processor
     nixfmt # Official formatter for Nix code
+    postgres-language-server # Tools and language server for Postgres (LSP + CLI)
     vim # Most popular clone of the VI editor
     yq-go # Portable command-line YAML processor
 
