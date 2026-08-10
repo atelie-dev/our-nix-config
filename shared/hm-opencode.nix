@@ -83,8 +83,9 @@
           model = "ollama-cloud/glm-5.2";
           options.fallback = [
             "ollama-cloud-2/glm-5.2"
-            "google/gemini-3.5-flash"
-            "openrouter/nvidia/nemotron-3-super-120b-a12b"
+            "ollama-cloud/deepseek-v4-flash:0731"
+            "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
+            "openrouter/poolside/laguna-s-2.1:free"
           ];
         };
         explore = {
@@ -154,6 +155,18 @@
               temperature = true;
               limit = {
                 context = 976000;
+                output = 131072;
+              };
+            };
+            "gemma4:31b" = {
+              name = "Gemma 4 31B Cloud";
+              family = "gemma";
+              attachment = true;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              limit = {
+                context = 262144;
                 output = 131072;
               };
             };
