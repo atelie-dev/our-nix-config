@@ -27,7 +27,6 @@
   # Enables local LLMs
   services.ollama = {
     enable = true;
-    home = "/mnt/magnetic/ollama";
   };
 
   environment.systemPackages = [
