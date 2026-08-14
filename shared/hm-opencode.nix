@@ -69,13 +69,13 @@
         "opencode-plugin-ast-lsp"
         "@angdrew/opencode-hashline-plugin"
       ];
-      model = "ollama-cloud/deepseek-v4-flash:0731";
+      model = "ollama-cloud/deepseek-v4-flash";
       agent = {
         build = {
-          model = "ollama-cloud/deepseek-v4-flash:0731";
+          model = "ollama-cloud/deepseek-v4-flash";
           variant = "high";
           options.fallback = [
-            "ollama-cloud-2/deepseek-v4-flash:0731"
+            "ollama-cloud-2/deepseek-v4-flash"
             "deepseek/deepseek-v4-flash"
           ];
         };
@@ -83,7 +83,9 @@
           model = "ollama-cloud/glm-5.2";
           options.fallback = [
             "ollama-cloud-2/glm-5.2"
-            "ollama-cloud/deepseek-v4-flash:0731"
+            "ollama-cloud/deepseek-v4-flash"
+            "ollama-cloud-2/deepseek-v4-flash"
+            "deepseek/deepseek-v4-flash"
             "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
             "openrouter/poolside/laguna-s-2.1:free"
           ];
@@ -91,7 +93,7 @@
         explore = {
           mode = "subagent";
           options.fallback = [
-            "ollama-cloud-2/deepseek-v4-flash:0731"
+            "ollama-cloud-2/deepseek-v4-flash"
             "deepseek/deepseek-v4-flash"
           ];
           permission = {
@@ -131,7 +133,7 @@
             apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/ollama_cloud_api_key}";
           };
           models = {
-            "deepseek-v4-flash:0731" = {
+            "deepseek-v4-flash" = {
               name = "DeepSeek V4 Flash 0731";
               family = "deepseek-flash";
               attachment = false;
