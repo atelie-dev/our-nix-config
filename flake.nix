@@ -5,8 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    solaar.url = "github:Svenum/Solaar-Flake/main";
-    solaar.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
@@ -20,7 +18,6 @@
       self,
       nixpkgs,
       home-manager,
-      solaar,
       nix-index-database,
       sops-nix,
       basecamp-cli,
@@ -33,7 +30,6 @@
         fabio-nixos = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            solaar.nixosModules.default
             ./machines/fabio-nixos/configuration.nix
             ./users/fabio.nix
             nix-index-database.nixosModules.default
@@ -52,7 +48,6 @@
         tania-nixos = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            solaar.nixosModules.default
             ./machines/tania-nixos/configuration.nix
             ./users/tania.nix
             nix-index-database.nixosModules.default
@@ -71,7 +66,6 @@
         lg-gram-i7 = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            solaar.nixosModules.default
             ./machines/lg-gram-i7/configuration.nix
             ./users/tania.nix
             nix-index-database.nixosModules.default

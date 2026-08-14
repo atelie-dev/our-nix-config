@@ -3,8 +3,9 @@
   # Enable Logitech udev rules
   hardware.logitech.wireless.enable = true;
 
-  services.solaar = {
+  programs.solaar = {
     enable = true;
-    window = "hide";
+    userService.enable = true;
+    userService.window = "hide";
   };
 }
