@@ -20,7 +20,6 @@
   # Enables CUDA support, and add extra caches for CUDA packages
   nixpkgs.config.cudaSupport = true;
   nix.settings.extra-substituters = [
-    "https://cuda-maintainers.cachix.org"
     "https://cache.nixos-cuda.org"
   ];
 
