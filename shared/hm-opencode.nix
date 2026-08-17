@@ -77,17 +77,16 @@
           options.fallback = [
             "ollama-cloud-2/deepseek-v4-flash"
             "deepseek/deepseek-v4-flash"
+            "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
           ];
         };
         plan = {
           model = "ollama-cloud/glm-5.2";
           options.fallback = [
             "ollama-cloud-2/glm-5.2"
-            "ollama-cloud/deepseek-v4-flash"
-            "ollama-cloud-2/deepseek-v4-flash"
-            "deepseek/deepseek-v4-flash"
-            "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
-            "openrouter/poolside/laguna-s-2.1:free"
+            "ollama-cloud/minimax-m3"
+            "ollama-cloud-2/minimax-m3"
+            "deepseek/deepseek-v4-pro"
           ];
         };
         explore = {
@@ -95,6 +94,7 @@
           options.fallback = [
             "ollama-cloud-2/deepseek-v4-flash"
             "deepseek/deepseek-v4-flash"
+            "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
           ];
           permission = {
             edit = "deny";
@@ -169,6 +169,18 @@
               temperature = true;
               limit = {
                 context = 262144;
+                output = 131072;
+              };
+            };
+            "minimax-m3" = {
+              name = "MiniMax M3 Cloud";
+              family = "minimax";
+              attachment = true;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              limit = {
+                context = 1048576;
                 output = 131072;
               };
             };
