@@ -26,6 +26,13 @@
     secrets.ollama_cloud_api_key = {
       sopsFile = ./../secrets/ollama-cloud.yaml;
     };
+    # Z.ai Coding Plan API key, stored in its own SOPS-encrypted file and
+    # read via {file:...} interpolation. The Coding Plan endpoint is billed
+    # separately from the general Z.ai API balance, so it needs its own key
+    # and the dedicated /coding/paas/v4 baseURL.
+    secrets.zai_api_key = {
+      sopsFile = ./../secrets/zai.yaml;
+    };
   };
 
   programs.opencode = {
@@ -84,6 +91,7 @@
           model = "ollama-cloud/glm-5.2";
           options.fallback = [
             "ollama-cloud-2/glm-5.2"
+            "zai-coding/glm-5.2"
             "ollama-cloud/minimax-m3"
             "ollama-cloud-2/minimax-m3"
             "deepseek/deepseek-v4-pro"
@@ -181,6 +189,58 @@
               temperature = true;
               limit = {
                 context = 1048576;
+                output = 131072;
+              };
+            };
+          };
+        };
+        # Z.ai Coding Plan — uses the dedicated /coding/paas/v4 endpoint,
+        # which is billed against the Coding Plan subscription quota rather
+        # than the general pay-as-you-go API balance. GLM-5.3 is the Coding
+        # Plan's default model and is only served from this endpoint.
+        # Models are selected as `zai-coding/<model>`.
+        # `models` must be declared explicitly: although models.dev knows
+        # about the `zai` provider, it points at the general /paas/v4
+        # endpoint and GLM-5.3 is not yet in its catalog. This custom
+        # provider uses the Coding Plan endpoint and declares glm-5.3
+        # manually. Metadata mirrors the GLM-5.2 entry on ollama-cloud-2
+        # (same GLM family, reasoning + tool_call) with the 1,048,576-token
+        # context documented for GLM-5.3.
+        zai-coding = {
+          name = "Z.ai Coding Plan";
+          npm = "@ai-sdk/openai-compatible";
+          options = {
+            baseURL = "https://api.z.ai/api/coding/paas/v4";
+            apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/zai_api_key}";
+          };
+          models = {
+            "glm-5.3" = {
+              name = "GLM-5.3";
+              family = "glm";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              interleaved = {
+                field = "reasoning_content";
+              };
+              temperature = true;
+              limit = {
+                context = 1048576;
+                output = 131072;
+              };
+            };
+            "glm-5.2" = {
+              name = "GLM-5.2";
+              family = "glm";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              interleaved = {
+                field = "reasoning_content";
+              };
+              temperature = true;
+              limit = {
+                context = 976000;
                 output = 131072;
               };
             };
