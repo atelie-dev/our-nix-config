@@ -92,7 +92,7 @@
           options.fallback = [
             "ollama-cloud-2/glm-5.2"
             "neuralwatt/glm-5.2"
-            "zai-coding/glm-5.2"
+            "zai-coding-plan/glm-5.2"
             "ollama-cloud/minimax-m3"
             "ollama-cloud-2/minimax-m3"
             "deepseek/deepseek-v4-pro"
@@ -130,10 +130,10 @@
         # The primary `ollama-cloud` provider is left as the built-in, which
         # authenticates via ~/.local/share/opencode/auth.json (/connect).
         # Models on this provider are selected as `ollama-cloud-2/<model>`.
-        # `models` must be declared explicitly: `ollama-cloud-2` is a custom
-        # provider id that models.dev does not know, so the /model picker
-        # stays empty without this block. Metadata mirrors the models.dev
-        # catalog for the built-in `ollama-cloud` provider.
+        # Model metadata is inherited from the models.dev `ollama-cloud`
+        # catalog by the local provider-alias plugin (see
+        # ~/.config/opencode/plugins/provider-alias.ts), so no `models`
+        # block is needed here.
         ollama-cloud-2 = {
           name = "Ollama Cloud 2";
           npm = "@ai-sdk/openai-compatible";
@@ -141,110 +141,16 @@
             baseURL = "https://ollama.com/v1";
             apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/ollama_cloud_api_key}";
           };
-          models = {
-            "deepseek-v4-flash" = {
-              name = "DeepSeek V4 Flash 0731";
-              family = "deepseek-flash";
-              attachment = false;
-              reasoning = true;
-              tool_call = true;
-              temperature = true;
-              limit = {
-                context = 1048576;
-                output = 1048576;
-              };
-            };
-            "glm-5.2" = {
-              name = "GLM-5.2";
-              family = "glm";
-              attachment = false;
-              reasoning = true;
-              tool_call = true;
-              interleaved = {
-                field = "reasoning_content";
-              };
-              temperature = true;
-              limit = {
-                context = 976000;
-                output = 131072;
-              };
-            };
-            "gemma4:31b" = {
-              name = "Gemma 4 31B Cloud";
-              family = "gemma";
-              attachment = true;
-              reasoning = true;
-              tool_call = true;
-              temperature = true;
-              limit = {
-                context = 262144;
-                output = 131072;
-              };
-            };
-            "minimax-m3" = {
-              name = "MiniMax M3 Cloud";
-              family = "minimax";
-              attachment = true;
-              reasoning = true;
-              tool_call = true;
-              temperature = true;
-              limit = {
-                context = 1048576;
-                output = 131072;
-              };
-            };
-          };
         };
         # Z.ai Coding Plan — uses the dedicated /coding/paas/v4 endpoint,
         # which is billed against the Coding Plan subscription quota rather
-        # than the general pay-as-you-go API balance. GLM-5.3 is the Coding
-        # Plan's default model and is only served from this endpoint.
-        # Models are selected as `zai-coding/<model>`.
-        # `models` must be declared explicitly: although models.dev knows
-        # about the `zai` provider, it points at the general /paas/v4
-        # endpoint and GLM-5.3 is not yet in its catalog. This custom
-        # provider uses the Coding Plan endpoint and declares glm-5.3
-        # manually. Metadata mirrors the GLM-5.2 entry on ollama-cloud-2
-        # (same GLM family, reasoning + tool_call) with the 1,048,576-token
-        # context documented for GLM-5.3.
-        zai-coding = {
-          name = "Z.ai Coding Plan";
-          npm = "@ai-sdk/openai-compatible";
+        # than the general pay-as-you-go API balance. The provider ID
+        # `zai-coding-plan` matches the models.dev catalog, which auto-
+        # discovers all available models (glm-4.7, glm-5-turbo, glm-5.2,
+        # glm-5.2-highspeed, glm-5.3). Only the API key needs to be supplied.
+        zai-coding-plan = {
           options = {
-            baseURL = "https://api.z.ai/api/coding/paas/v4";
             apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/zai_api_key}";
-          };
-          models = {
-            "glm-5.3" = {
-              name = "GLM-5.3";
-              family = "glm";
-              attachment = false;
-              reasoning = true;
-              tool_call = true;
-              interleaved = {
-                field = "reasoning_content";
-              };
-              temperature = true;
-              limit = {
-                context = 1048576;
-                output = 131072;
-              };
-            };
-            "glm-5.2" = {
-              name = "GLM-5.2";
-              family = "glm";
-              attachment = false;
-              reasoning = true;
-              tool_call = true;
-              interleaved = {
-                field = "reasoning_content";
-              };
-              temperature = true;
-              limit = {
-                context = 976000;
-                output = 131072;
-              };
-            };
           };
         };
       };
