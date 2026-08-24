@@ -91,6 +91,7 @@
           model = "ollama-cloud/glm-5.2";
           options.fallback = [
             "ollama-cloud-2/glm-5.2"
+            "neuralwatt/glm-5.2"
             "zai-coding/glm-5.2"
             "ollama-cloud/minimax-m3"
             "ollama-cloud-2/minimax-m3"
