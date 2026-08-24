@@ -123,6 +123,11 @@
     '';
   };
 
+  # Use userborn instead of update-users-groups.pl for user management.
+  # Avoids spurious "not applying UID change" warnings for gdm-greeter users
+  # (see https://github.com/NixOS/nixpkgs/issues/525919).
+  services.userborn.enable = true;
+
   # Enables Wayland support for Electron Apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
