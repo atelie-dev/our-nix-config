@@ -23,7 +23,7 @@
 
     # LibreOffice and OnlyOffice
     onlyoffice-desktopeditors
-    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.org
+    libreoffice-stable # Comprehensive, professional-quality productivity suite, a variant of openoffice.org
     hunspell # Spell checker
     hunspellDicts.pt_BR # Hunspell dictionary for Portuguese (Brazil) from LibreOffice
     hunspellDicts.en_US # Hunspell dictionary for English (United States) from Wordlist
