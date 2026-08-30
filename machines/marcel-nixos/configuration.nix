@@ -14,6 +14,7 @@
     ./virtualization.nix
     ../../shared/scripts.nix
     ../../shared/no-sleep.nix
+    ../../shared/binary-cache-client.nix
   ];
 
   networking.hostName = "marcel-nixos"; # Define your hostname.

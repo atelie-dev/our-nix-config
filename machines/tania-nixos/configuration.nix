@@ -15,6 +15,7 @@
     ../../shared/scripts.nix
     ../../shared/logitech.nix
     ../../shared/no-sleep.nix
+    ../../shared/binary-cache-client.nix
   ];
 
   networking.hostName = "tania-nixos"; # Define your hostname.
