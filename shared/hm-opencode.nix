@@ -88,11 +88,11 @@
           ];
         };
         plan = {
-          model = "ollama-cloud/glm-5.2";
+          model = "ollama-cloud/glm-5.3-flash";
           options.fallback = [
-            "ollama-cloud-2/glm-5.2"
+            "ollama-cloud-2/glm-5.3-flash"
+            "zai-coding-plan/glm-5.3-flash"
             "neuralwatt/glm-5.2"
-            "zai-coding-plan/glm-5.2"
             "ollama-cloud/minimax-m3"
             "ollama-cloud-2/minimax-m3"
             "deepseek/deepseek-v4-pro"
@@ -147,7 +147,8 @@
         # than the general pay-as-you-go API balance. The provider ID
         # `zai-coding-plan` matches the models.dev catalog, which auto-
         # discovers all available models (glm-4.7, glm-5-turbo, glm-5.2,
-        # glm-5.2-highspeed, glm-5.3). Only the API key needs to be supplied.
+        # glm-5.2-highspeed, glm-5.3, glm-5.3-highspeed, glm-5.3-flash).
+        # Only the API key needs to be supplied.
         zai-coding-plan = {
           options = {
             apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/zai_api_key}";
