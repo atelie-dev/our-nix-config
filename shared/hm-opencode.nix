@@ -39,6 +39,12 @@
     enable = true;
     extraPackages = [
       pkgs.nodejs_24
+      # Bash LSP for opencode (.sh/.bash/.zsh/.ksh) — built-in server that
+      # activates when the binary is on PATH.
+      pkgs.bash-language-server
+      # Shellcheck diagnostics are surfaced through the bash LSP when
+      # shellcheck is available.
+      pkgs.shellcheck
     ];
     context = ''
       # General rules
