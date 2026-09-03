@@ -5,16 +5,6 @@
   ...
 }:
 {
-  # The opencode-plugin-ast-lsp looks for binary "sg" in its own cache
-  # (~/.cache/opencode-plugin-ast-lsp/bin/sg), not the system PATH.
-  # On NixOS "sg" is the shadow-utils group switch command, so we
-  # symlink the Nix-installed ast-grep into that cache directory.
-  home.activation.populateAstGrepCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    cache_dir="${config.home.homeDirectory}/.cache/opencode-plugin-ast-lsp/bin"
-    mkdir -p "$cache_dir"
-    ln -sf "${pkgs.ast-grep}/bin/ast-grep" "$cache_dir/sg"
-  '';
-
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     defaultSopsFile = ./../secrets/firecrawl.yaml;
@@ -39,6 +29,9 @@
     enable = true;
     extraPackages = [
       pkgs.nodejs_24
+      # AST-aware code search/replace CLI, used directly via bash by agents
+      # (structural refactors that plain grep cannot express).
+      pkgs.ast-grep
       # Bash LSP for opencode (.sh/.bash/.zsh/.ksh) — built-in server that
       # activates when the binary is on PATH.
       pkgs.bash-language-server
@@ -79,7 +72,6 @@
       default_agent = "OpenCoder";
       plugin = [
         "@simonwjackson/opencode-direnv"
-        "opencode-plugin-ast-lsp"
         "@angdrew/opencode-hashline-plugin"
       ];
       model = "ollama-cloud/deepseek-v4-flash";
@@ -117,8 +109,9 @@
           };
           prompt = ''
             You are a codebase exploration agent. Your task is to analyze the code structure.
-            When searching for patterns, function definitions, or class usages, use the `ast_grep_search` tool
-            to find them based on syntax trees, not just text. This will give more accurate results.
+            When searching for patterns, function definitions, or class usages, use the `ast-grep` CLI
+            via bash (e.g. `ast-grep run -p 'pattern' --json`) to find them based on syntax trees,
+            not just text. This will give more accurate results.
             Do not make any edits.
           '';
         };
