@@ -86,13 +86,14 @@
           ];
         };
         plan = {
-          model = "ollama-cloud/glm-5.3-flash";
+          model = "ollama-cloud/glm-5.3";
           options.fallback = [
-            "ollama-cloud-2/glm-5.3-flash"
+            "ollama-cloud-2/glm-5.3"
+            "opencode-go/glm-5.3"
+            "zai-coding-plan/glm-5.3"
+            "ollama-cloud/glm-5.3-flash"
             "opencode-go/glm-5.3-flash"
-            "zai-coding-plan/glm-5.3-flash"
             "neuralwatt/glm-5.3-flash"
-            "neuralwatt/glm-5.2"
             "openrouter/deepseek/deepseek-v4.1-flash"
             "ollama-cloud/deepseek-v4-flash"
             "deepseek/deepseek-v4-pro"
