@@ -32,6 +32,7 @@
   ];
 
   programs.gnupg.agent.enable = true;
+  programs.localsend.enable = true;
 
   # Mission Center: read Intel RAPL CPU power without root
   services.udev.extraRules = ''
