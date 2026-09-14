@@ -9,7 +9,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    basecamp-cli.url = "github:basecamp/basecamp-cli/0eb7a9a64b6ffd43ec2ffaaf0c50e58e3d61c6da";
+    basecamp-cli.url = "github:basecamp/basecamp-cli/v0.11.0";
     basecamp-cli.inputs.nixpkgs.follows = "nixpkgs";
   };
 
