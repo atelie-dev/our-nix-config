@@ -28,15 +28,6 @@
     };
   };
 
-  boot.binfmt = {
-    emulatedSystems = [
-      "aarch64-linux"
-      "armv6l-linux"
-      "armv7l-linux"
-    ];
-    preferStaticEmulators = true; # Essential for Docker
-  };
-
   # Allocate hugepages early via kernel parameter
   boot.kernelParams = [
     "hugepagesz=2M"
