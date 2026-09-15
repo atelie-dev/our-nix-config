@@ -4,6 +4,16 @@
   config,
   ...
 }:
+let
+  bun_1_3_13 = pkgs.bun.overrideAttrs (old: rec {
+    version = "1.3.13";
+    src = pkgs.fetchurl {
+      url = "https://github.com/oven-sh/bun/releases/download/bun-v${version}/bun-linux-x64-baseline.zip";
+      hash = "sha256-nYokKSpwaAkCBdqsCloiP19pc29Sh+N7+I07QDHtx1A=";
+    };
+  });
+  opencode_bun_1_3_13 = pkgs.opencode.override { bun = bun_1_3_13; };
+in
 {
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
@@ -27,6 +37,7 @@
 
   programs.opencode = {
     enable = true;
+    package = opencode_bun_1_3_13;
     extraPackages = [
       pkgs.nodejs_24
       # AST-aware code search/replace CLI, used directly via bash by agents
