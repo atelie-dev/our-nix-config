@@ -50,6 +50,7 @@
 
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.runAsRoot = true;
+  virtualisation.libvirtd.qemu.swtpm.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
   home-manager.users.fabio.dconf.settings = {
