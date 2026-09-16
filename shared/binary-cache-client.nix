@@ -9,4 +9,7 @@
   nix.settings.trusted-public-keys = [
     "fabio-nixos-cache:xGlq5sOwQc0CNq3BfJ0SpTrf8W31c8xjcic3N7ZW5BA="
   ];
+  # Bound connection attempts (incl. DNS) so an offline fabio doesn't stall
+  # every path lookup; Nix then skips the cache and builds/falls through.
+  nix.settings.connect-timeout = 5;
 }
