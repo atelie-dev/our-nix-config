@@ -7,7 +7,9 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.url = "github:Mic92/sops-nix";
+    # Pinned to PR #984 head (buildGo125Module -> buildGo126Module) until merged upstream.
+    # Revert to "github:Mic92/sops-nix" once https://github.com/Mic92/sops-nix/pull/984 is merged.
+    sops-nix.url = "github:Mic92/sops-nix/81630c5d814c38e6bf7b23888b53d8dad595e228";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     basecamp-cli.url = "github:basecamp/basecamp-cli/v0.11.0";
     basecamp-cli.inputs.nixpkgs.follows = "nixpkgs";
