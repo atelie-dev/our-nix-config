@@ -18,7 +18,7 @@ in
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     defaultSopsFile = ./../secrets/firecrawl.yaml;
-    secrets.firecrawl_api_key = {};
+    secrets.firecrawl_api_key = { };
     # Ollama Cloud API key for the second provider account, stored in its
     # own SOPS-encrypted file and read via {file:...} interpolation.
     # The primary `ollama-cloud` provider is left untouched and keeps using
@@ -91,7 +91,6 @@ in
           model = "ollama-cloud/deepseek-v4-flash";
           variant = "high";
           options.fallback = [
-            "ollama-cloud-2/deepseek-v4-flash"
             "deepseek/deepseek-v4-flash"
             "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
           ];
@@ -99,7 +98,6 @@ in
         plan = {
           model = "ollama-cloud/glm-5.3";
           options.fallback = [
-            "ollama-cloud-2/glm-5.3"
             "opencode-go/glm-5.3"
             "zai-coding-plan/glm-5.3"
             "ollama-cloud/glm-5.3-flash"
@@ -113,7 +111,6 @@ in
         explore = {
           mode = "subagent";
           options.fallback = [
-            "ollama-cloud-2/deepseek-v4-flash"
             "deepseek/deepseek-v4-flash"
             "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
           ];
@@ -136,23 +133,6 @@ in
           npm = "@ai-sdk/openai-compatible";
           options = {
             baseURL = "http://127.0.0.1:11434/v1";
-          };
-        };
-        # Second Ollama Cloud account — API key read from the SOPS-decrypted
-        # file at ~/.config/sops-nix/secrets/ollama_cloud_api_key.
-        # The primary `ollama-cloud` provider is left as the built-in, which
-        # authenticates via ~/.local/share/opencode/auth.json (/connect).
-        # Models on this provider are selected as `ollama-cloud-2/<model>`.
-        # Model metadata is inherited from the models.dev `ollama-cloud`
-        # catalog by the local provider-alias plugin (see
-        # ~/.config/opencode/plugins/provider-alias.ts), so no `models`
-        # block is needed here.
-        ollama-cloud-2 = {
-          name = "Ollama Cloud 2";
-          npm = "@ai-sdk/openai-compatible";
-          options = {
-            baseURL = "https://ollama.com/v1";
-            apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/ollama_cloud_api_key}";
           };
         };
         # Z.ai Coding Plan — uses the dedicated /coding/paas/v4 endpoint,
