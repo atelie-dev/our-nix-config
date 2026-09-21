@@ -85,33 +85,45 @@ in
         "@simonwjackson/opencode-direnv"
         "@angdrew/opencode-hashline-plugin"
       ];
-      model = "ollama-cloud/deepseek-v4-flash";
+      # Primary: Neuralwatt (self-hosted energy pricing). Foreground agents
+      # run standard tier; subagents run flex tier (0.65x energy, deferrable).
+      # OpenCode Go / Z.AI / Ollama demoted to fallbacks.
+      model = "neuralwatt/glm-5.3-flash";
       agent = {
         build = {
-          model = "ollama-cloud/deepseek-v4-flash";
+          model = "neuralwatt/deepseek-v4.1-flash";
           variant = "high";
           options.fallback = [
-            "deepseek/deepseek-v4-flash"
-            "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
+            "opencode-go/deepseek-v4.1-flash"
+            "deepseek/deepseek-v4.1-flash"
+            "openrouter/deepseek/deepseek-v4.1-flash"
           ];
         };
         plan = {
-          model = "ollama-cloud/glm-5.3";
+          # Interactive agent: full-speed Neuralwatt GLM-5.3 (standard tier,
+          # not Flex) so planning never waits on deferrable scheduling.
+          # Z.ai Coding Plan is the overflow layer (already paid, yearly).
+          model = "neuralwatt/glm-5.3";
           options.fallback = [
-            "opencode-go/glm-5.3"
             "zai-coding-plan/glm-5.3"
-            "ollama-cloud/glm-5.3-flash"
-            "opencode-go/glm-5.3-flash"
+            "opencode-go/glm-5.3"
+            "ollama-cloud/glm-5.3"
             "neuralwatt/glm-5.3-flash"
+            "opencode-go/glm-5.3-flash"
+            "zai-coding-plan/glm-5.3-flash"
+            "ollama-cloud/glm-5.3-flash"
             "openrouter/deepseek/deepseek-v4.1-flash"
-            "ollama-cloud/deepseek-v4-flash"
-            "deepseek/deepseek-v4-pro"
+            "deepseek/deepseek-v4.1-flash"
           ];
         };
         explore = {
-          mode = "subagent";
+          # Subagent: flex tier (deferrable, 0.65x energy).
+          model = "neuralwatt/glm-5.3-flash-flex";
           options.fallback = [
-            "deepseek/deepseek-v4-flash"
+            "neuralwatt/glm-5.3-flash"
+            "opencode-go/glm-5.3-flash"
+            "zai-coding-plan/glm-5.3-flash"
+            "deepseek/deepseek-v4.1-flash"
             "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
           ];
           permission = {
@@ -133,6 +145,85 @@ in
           npm = "@ai-sdk/openai-compatible";
           options = {
             baseURL = "http://127.0.0.1:11434/v1";
+          };
+        };
+        # Neuralwatt serves these models but the models.dev catalog lags
+        # behind (it still lacks glm-5.3-flash and deepseek-v4.1-flash),
+        # so they are declared explicitly here. Rates from
+        # portal.neuralwatt.com/pricing (token pricing; energy billing is
+        # capped against these rates anyway).
+        neuralwatt = {
+          models = {
+            "glm-5.3-flash" = {
+              name = "GLM 5.3 Flash";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              release_date = "2026-08-26";
+              limit = {
+                context = 1048560;
+                output = 1048560;
+              };
+              cost = {
+                input = 0.15;
+                output = 0.5;
+                cache_read = 0.03;
+              };
+            };
+            # Flex tier: 0.65x energy discount for deferrable requests.
+            # Not yet in models.dev (same PR #7482 gap) — declared here.
+            "glm-5.3-flash-flex" = {
+              name = "GLM 5.3 Flash (Flex)";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              release_date = "2026-08-26";
+              limit = {
+                context = 1048560;
+                output = 1048560;
+              };
+              cost = {
+                input = 0.0975;
+                output = 0.325;
+                cache_read = 0.0195;
+              };
+            };
+            "glm-5.3-flex" = {
+              name = "GLM 5.3 (Flex)";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              release_date = "2026-08-14";
+              limit = {
+                context = 1048560;
+                output = 1048560;
+              };
+              cost = {
+                input = 0.9425;
+                output = 2.925;
+                cache_read = 0.09425;
+              };
+            };
+            "deepseek-v4.1-flash" = {
+              name = "DeepSeek V4.1 Flash";
+              attachment = false;
+              reasoning = true;
+              tool_call = true;
+              temperature = true;
+              release_date = "2026-08-20";
+              limit = {
+                context = 1048560;
+                output = 393216;
+              };
+              cost = {
+                input = 0.15;
+                output = 0.6;
+                cache_read = 0.015;
+              };
+            };
           };
         };
         # Z.ai Coding Plan — uses the dedicated /coding/paas/v4 endpoint,
