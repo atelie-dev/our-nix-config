@@ -16,12 +16,7 @@
     compsize # Find compression type/ratio on a file or set of files in the Btrfs filesystem
   ];
 
-  # 1Password
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ "fabio" ];
-  };
+  # 1Password is configured in shared/onepassword.nix
 
   programs.steam = {
     enable = true;

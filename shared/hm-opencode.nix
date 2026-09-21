@@ -176,6 +176,15 @@ in
         };
       };
       mcp = {
+        # 1Password Environments MCP server. Uses the setgid wrapper from
+        # shared/onepassword.nix (the app's peer check requires
+        # egid=onepassword-mcp). Requires the 1Password app running and
+        # unlocked.
+        "1password" = {
+          type = "local";
+          command = [ "/run/wrappers/bin/1password-mcp" ];
+          enabled = true;
+        };
         atlassian = {
           type = "remote";
           url = "https://mcp.atlassian.com/v1/mcp/authv2";

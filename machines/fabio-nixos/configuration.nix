@@ -9,6 +9,7 @@
     ../../shared/base.nix
     ../../shared/cli-tools.nix
     ../../shared/gui-tools.nix
+    ../../shared/onepassword.nix
     ./hardware-configuration.nix
     ./nvidia.nix
     ./packages.nix
