@@ -36,11 +36,8 @@
       # AST-aware code search/replace CLI, used directly via bash by agents
       # (structural refactors that plain grep cannot express).
       pkgs.ast-grep
-      # Bash LSP for opencode (.sh/.bash/.zsh/.ksh) — built-in server that
-      # activates when the binary is on PATH.
-      pkgs.bash-language-server
-      # Shellcheck diagnostics are surfaced through the bash LSP when
-      # shellcheck is available.
+      # Shellcheck — agents can run it via bash. (The bash-language-server
+      # that used to sit here is gone: OpenCode 2 no longer runs LSPs.)
       pkgs.shellcheck
     ];
     context = ''
@@ -74,7 +71,10 @@
     };
     settings = {
       default_agent = "OpenCoder";
-      plugin = [
+      # V2: `plugin` became `plugins`. V1 plugin IMPLEMENTATIONS do not run
+      # in V2 (https://opencode.ai/v2/build/plugins/migrate-v1) — verify
+      # these two packages ship V2-API builds after switching.
+      plugins = [
         "@simonwjackson/opencode-direnv"
         "@angdrew/opencode-hashline-plugin"
       ];
@@ -82,63 +82,62 @@
       # run standard tier; subagents run flex tier (0.65x energy, deferrable).
       # OpenCode Go / Z.AI / Ollama demoted to fallbacks.
       model = "neuralwatt/glm-5.3-flash";
-      agent = {
+      # V2: `agent` became `agents`; `prompt` -> `system`, `disable` ->
+      # `disabled`, model variants join as `model#variant`, grouped
+      # `permission` became the ordered `permissions` array.
+      agents = {
         build = {
-          model = "neuralwatt/deepseek-v4.1-flash";
-          variant = "high";
-          options.fallback = [
-            "opencode-go/deepseek-v4.1-flash"
-            "deepseek/deepseek-v4.1-flash"
-            "openrouter/deepseek/deepseek-v4.1-flash"
-          ];
+          model = "neuralwatt/deepseek-v4.1-flash#high";
+          # The V1 `options.fallback` lists are dropped: OpenCode 2.0.18 has
+          # no fallback field in its config schema. They were:
+          # opencode-go/deepseek-v4.1-flash, deepseek/deepseek-v4.1-flash,
+          # openrouter/deepseek/deepseek-v4.1-flash
         };
         plan = {
           # Interactive agent: full-speed Neuralwatt GLM-5.3 (standard tier,
           # not Flex) so planning never waits on deferrable scheduling.
           # Z.ai Coding Plan is the overflow layer (already paid, yearly).
           model = "neuralwatt/glm-5.3";
-          options.fallback = [
-            "zai-coding-plan/glm-5.3"
-            "opencode-go/glm-5.3"
-            "ollama-cloud/glm-5.3"
-            "neuralwatt/glm-5.3-flash"
-            "opencode-go/glm-5.3-flash"
-            "zai-coding-plan/glm-5.3-flash"
-            "ollama-cloud/glm-5.3-flash"
-            "openrouter/deepseek/deepseek-v4.1-flash"
-            "deepseek/deepseek-v4.1-flash"
-          ];
+          # V1 fallback list (dropped, see build): zai-coding-plan/glm-5.3,
+          # opencode-go/glm-5.3, ollama-cloud/glm-5.3,
+          # neuralwatt/glm-5.3-flash, opencode-go/glm-5.3-flash,
+          # zai-coding-plan/glm-5.3-flash, ollama-cloud/glm-5.3-flash,
+          # openrouter/deepseek/deepseek-v4.1-flash,
+          # deepseek/deepseek-v4.1-flash
         };
         explore = {
           # Subagent: flex tier (deferrable, 0.65x energy).
           model = "neuralwatt/glm-5.3-flash-flex";
-          options.fallback = [
-            "neuralwatt/glm-5.3-flash"
-            "opencode-go/glm-5.3-flash"
-            "zai-coding-plan/glm-5.3-flash"
-            "deepseek/deepseek-v4.1-flash"
-            "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
+          # V1 {edit, write} = deny collapses to the V2 `edit` action
+          # (write/patch merged into edit).
+          permissions = [
+            {
+              action = "edit";
+              resource = "*";
+              effect = "deny";
+            }
           ];
-          permission = {
-            edit = "deny";
-            write = "deny";
-          };
-          prompt = ''
+          system = ''
             You are a codebase exploration agent. Your task is to analyze the code structure.
             When searching for patterns, function definitions, or class usages, use the `ast-grep` CLI
             via bash (e.g. `ast-grep run -p 'pattern' --json`) to find them based on syntax trees,
             not just text. This will give more accurate results.
             Do not make any edits.
           '';
+          # V1 fallback list (dropped, see build): neuralwatt/glm-5.3-flash,
+          # opencode-go/glm-5.3-flash, zai-coding-plan/glm-5.3-flash,
+          # deepseek/deepseek-v4.1-flash,
+          # openrouter/nvidia/nemotron-3-super-120b-a12b:free
         };
       };
-      provider = {
+      # V2: `provider` became `providers`; `npm` -> `package` (AI SDK
+      # packages take the `aisdk:` prefix); `options.baseURL` ->
+      # `settings.baseURL`; `options.apiKey` -> `settings.apiKey`.
+      providers = {
         ollama = {
           name = "Ollama";
-          npm = "@ai-sdk/openai-compatible";
-          options = {
-            baseURL = "http://127.0.0.1:11434/v1";
-          };
+          package = "aisdk:@ai-sdk/openai-compatible";
+          settings.baseURL = "http://127.0.0.1:11434/v1";
         };
         # Z.ai Coding Plan — uses the dedicated /coding/paas/v4 endpoint,
         # which is billed against the Coding Plan subscription quota rather
@@ -148,12 +147,15 @@
         # glm-5.2-highspeed, glm-5.3, glm-5.3-highspeed, glm-5.3-flash).
         # Only the API key needs to be supplied.
         zai-coding-plan = {
-          options = {
-            apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/zai_api_key}";
-          };
+          settings.apiKey = "{file:${config.home.homeDirectory}/.config/sops-nix/secrets/zai_api_key}";
         };
       };
       formatter = true;
+      # NOTE: V2 accepts and preserves `lsp` configuration but does not run
+      # language servers, expose LSP tools, or surface diagnostics
+      # (https://opencode.ai/v2/docs/migrate-v1). pyrefly and the postgres
+      # LSP below are therefore inert until these workflows move to
+      # lint/typecheck commands.
       lsp = {
         # Disable the built-in pyright server so pyrefly is the sole Python LSP.
         pyright.disabled = true;
@@ -180,52 +182,51 @@
           ];
         };
       };
+      # V2 groups servers under `mcp.servers` and inverts `enabled` into
+      # `disabled`; the V1 `oauth` toggle is not a V2 field.
       mcp = {
         # 1Password Environments MCP server. Uses the setgid wrapper from
         # shared/onepassword.nix (the app's peer check requires
         # egid=onepassword-mcp). Requires the 1Password app running and
         # unlocked.
-        "1password" = {
-          type = "local";
-          command = [ "/run/wrappers/bin/1password-mcp" ];
-          enabled = true;
-        };
-        atlassian = {
-          type = "remote";
-          url = "https://mcp.atlassian.com/v1/mcp/authv2";
-          enabled = false;
-        };
-        nixos = {
-          type = "local";
-          command = [ "mcp-nixos" ];
-          enabled = true;
-        };
-        firebase-mcp-server = {
-          type = "local";
-          command = [
-            "firebase"
-            "mcp"
-          ];
-          enabled = false;
-        };
-        firecrawl = {
-          type = "remote";
-          url = "https://mcp.firecrawl.dev/v2/mcp";
-          enabled = true;
-          headers = {
-            Authorization = "Bearer {file:${config.home.homeDirectory}/.config/sops-nix/secrets/firecrawl_api_key}";
+        servers = {
+          "1password" = {
+            type = "local";
+            command = [ "/run/wrappers/bin/1password-mcp" ];
           };
-          oauth = false;
-        };
-        chrome-devtools = {
-          type = "local";
-          command = [
-            "npx"
-            "-y"
-            "chrome-devtools-mcp@latest"
-            "--autoConnect"
-          ];
-          enabled = true;
+          atlassian = {
+            type = "remote";
+            url = "https://mcp.atlassian.com/v1/mcp/authv2";
+            disabled = true;
+          };
+          nixos = {
+            type = "local";
+            command = [ "mcp-nixos" ];
+          };
+          firebase-mcp-server = {
+            type = "local";
+            command = [
+              "firebase"
+              "mcp"
+            ];
+            disabled = true;
+          };
+          firecrawl = {
+            type = "remote";
+            url = "https://mcp.firecrawl.dev/v2/mcp";
+            headers = {
+              Authorization = "Bearer {file:${config.home.homeDirectory}/.config/sops-nix/secrets/firecrawl_api_key}";
+            };
+          };
+          chrome-devtools = {
+            type = "local";
+            command = [
+              "npx"
+              "-y"
+              "chrome-devtools-mcp@latest"
+              "--autoConnect"
+            ];
+          };
         };
       };
     };
