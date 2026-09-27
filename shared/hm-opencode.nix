@@ -71,12 +71,41 @@
     };
     settings = {
       default_agent = "OpenCoder";
-      # V2: `plugin` became `plugins`. V1 plugin IMPLEMENTATIONS do not run
-      # in V2 (https://opencode.ai/v2/build/plugins/migrate-v1) — verify
-      # these two packages ship V2-API builds after switching.
+      # V2: `plugin` became `plugins`. All plugins are local V2 ports in
+      # plugins/ (auto-discovered) except the fallback engine, which gets
+      # its per-agent fallback chains via plugin options. The two V1
+      # third-party plugins are gone: direnv was ported to
+      # plugins/direnv.ts, and hashline was removed (no V2 release;
+      # upstream AngDrew/opencode-hashline last touched April 2026).
       plugins = [
-        "@simonwjackson/opencode-direnv"
-        "@angdrew/opencode-hashline-plugin"
+        {
+          package = "./plugins/disable-provider-fallback.ts";
+          options.fallback = {
+            build = [
+              "opencode-go/deepseek-v4.1-flash"
+              "deepseek/deepseek-v4.1-flash"
+              "openrouter/deepseek/deepseek-v4.1-flash"
+            ];
+            plan = [
+              "zai-coding-plan/glm-5.3"
+              "opencode-go/glm-5.3"
+              "ollama-cloud/glm-5.3"
+              "neuralwatt/glm-5.3-flash"
+              "opencode-go/glm-5.3-flash"
+              "zai-coding-plan/glm-5.3-flash"
+              "ollama-cloud/glm-5.3-flash"
+              "openrouter/deepseek/deepseek-v4.1-flash"
+              "deepseek/deepseek-v4.1-flash"
+            ];
+            explore = [
+              "neuralwatt/glm-5.3-flash"
+              "opencode-go/glm-5.3-flash"
+              "zai-coding-plan/glm-5.3-flash"
+              "deepseek/deepseek-v4.1-flash"
+              "openrouter/nvidia/nemotron-3-super-120b-a12b:free"
+            ];
+          };
+        }
       ];
       # Primary: Neuralwatt (self-hosted energy pricing). Foreground agents
       # run standard tier; subagents run flex tier (0.65x energy, deferrable).
