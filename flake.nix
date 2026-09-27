@@ -13,6 +13,12 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     basecamp-cli.url = "github:basecamp/basecamp-cli/v0.11.0";
     basecamp-cli.inputs.nixpkgs.follows = "nixpkgs";
+    # OpenCode CLI/TUI built by upstream's own flake (dev branch).
+    opencode.url = "github:anomalyco/opencode";
+    # OpenChamber — web UI and Electron desktop GUI for OpenCode. Feature
+    # branch under trial before an upstream PR; its flake.lock pins its own
+    # nixpkgs and OpenCode CLI version.
+    openchamber.url = "github:fabiob/openchamber?ref=feat/nix-flake";
   };
 
   outputs =
@@ -23,6 +29,8 @@
       nix-index-database,
       sops-nix,
       basecamp-cli,
+      opencode,
+      openchamber,
     }@inputs:
     let
       inherit (self) outputs;

@@ -7,6 +7,8 @@
   nixpkgs.overlays = [
     (_final: prev: {
       basecamp-cli = inputs.basecamp-cli.packages.${prev.stdenv.hostPlatform.system}.basecamp;
+      # OpenCode CLI/TUI built by upstream's own flake (dev branch).
+      opencode-flake = inputs.opencode.packages.${prev.stdenv.hostPlatform.system}.opencode;
     })
   ];
 
