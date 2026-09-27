@@ -47,6 +47,18 @@
 
       When writing or suggesting new code, evaluate the effort using the skill `evaluate-new-dep`.
 
+      ## File editing
+
+      * Prefer the built-in `edit` tool (exact `oldString`/`newString` replacement) for modifying existing files; use `write` only for new files or full rewrites.
+      * Use `sed`/`awk` only when the same replacement must be applied to several files, or to many occurrences of one pattern at once — never for single, surgical edits.
+      * Never create, truncate, or delete files with shell redirection (`>`, `>>`, `tee`), `rm`, or inline `python` scripts. A failed shell edit can destroy a file; the `edit`/`write` tools cannot.
+
+      ## Tool surfaces (critical)
+
+      * **Direct function tools** — `read`, `write`, `edit`, `glob`, `grep`, `shell` — are standalone tool calls. They are NOT inside `execute` and will NEVER appear in the Code Mode catalog. `edit` takes `oldString`/`newString`.
+      * **Code Mode (`execute` → `tools.*`)** is for MCP/plugin tools only (namespaces like `image_*`, `nixos`, `firecrawl`, `chrome-devtools`). A tool's absence from catalog `search(...)` proves nothing — call core tools directly.
+      * Never re-implement edit/read/search via shell scripts (`sed`, `awk`, `python`) when the direct tool exists. If a direct call errors, report it — don't silently switch to a script workaround.
+
       ## NixOS environment
 
       Always remember we're running on a NixOS environment. This means:
