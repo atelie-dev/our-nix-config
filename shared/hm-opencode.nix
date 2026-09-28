@@ -82,7 +82,7 @@
       '';
     };
     settings = {
-      default_agent = "OpenCoder";
+      default_agent = "core/opencoder";
       # V2: `plugin` became `plugins`. All plugins are local V2 ports in
       # plugins/ (auto-discovered) except the fallback engine, which gets
       # its per-agent fallback chains via plugin options. The two V1
