@@ -43,7 +43,7 @@
     context = ''
       # General rules
 
-      Never interact directly with Git. Orient and ask the user to perform commits or any other git operation.
+      Only perform read-only Git commands (status, diff, log, show, branch) without asking; never perform Git write operations (commit, push, merge, rebase, reset, stash, checkout, tag) unless the user explicitly authorizes them in the current request. When the user authorizes a commit, first run `git status` and `git diff --staged` and verify the staged changes match the intent of the work — if they don't match, report the mismatch and ask before committing. When not authorized, orient and ask the user to perform the git operation.
 
       When writing or suggesting new code, evaluate the effort using the skill `evaluate-new-dep`.
 
