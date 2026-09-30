@@ -13,6 +13,11 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     basecamp-cli.url = "github:basecamp/basecamp-cli/v0.11.0";
     basecamp-cli.inputs.nixpkgs.follows = "nixpkgs";
+    # Freenet peer (supervised, self-updating). Pinned to a release tag per
+    # https://freenet.org/nix/ — the default branch can be ahead of every
+    # published release, which stalls the node's self-update. Kept on its own
+    # nixpkgs input (no follows) so it builds with its pinned toolchain.
+    freenet.url = "github:freenet/freenet-core/v0.2.140";
     # OpenChamber — web UI and Electron desktop GUI for OpenCode. Feature
     # branch under trial before an upstream PR; its flake.lock pins its own
     # nixpkgs and OpenCode CLI version. The flake also exposes the pinned
@@ -28,6 +33,7 @@
       nix-index-database,
       sops-nix,
       basecamp-cli,
+      freenet,
       openchamber,
     }@inputs:
     let
@@ -42,6 +48,7 @@
             ./users/fabio.nix
             nix-index-database.nixosModules.default
             { programs.nix-index-database.comma.enable = true; }
+            freenet.nixosModules.default
           ];
         };
         marcel-nixos = nixpkgs.lib.nixosSystem {

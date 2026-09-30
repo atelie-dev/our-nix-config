@@ -14,6 +14,7 @@
     ./nvidia.nix
     ./packages.nix
     ./virtualization.nix
+    ./freenet.nix
     ../../shared/scripts.nix
     ../../shared/logitech.nix
     ../../shared/no-sleep.nix
