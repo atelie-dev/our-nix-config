@@ -1,6 +1,4 @@
 {
-  config,
-  pkgs,
   ...
 }:
 {
@@ -12,7 +10,7 @@
   services.freenet-node = {
     enable = true;
     # Pin the peer port. The default is a random free port, which makes inbound
-    # connections (and the UPnP mapping below) unpredictable.
+    # connections unpredictable.
     extraArgs = [
       "--network-port"
       "31337"
@@ -22,28 +20,8 @@
   # Freenet's peer transport is UDP. Without this the peer only makes outbound
   # connections and contributes poorly to the network. (Harmonia's TCP 5000 is
   # opened in shared/binary-cache-server.nix; lists merge across modules.)
+  # Inbound reachability relies on a static port-forward on the router
+  # (UDP 31337 -> this host, NAT -> Port Forwarding): the ISP firmware has no
+  # UPnP, so there is no point maintaining a mapping from here.
   networking.firewall.allowedUDPPorts = [ 31337 ];
-
-  # Freenet does not request router port mappings itself (listed upstream as a
-  # future enhancement, not on the roadmap), so maintain the UPnP mapping from
-  # the host: ask the gateway to forward external UDP 31337 to this machine,
-  # refreshed on a timer because mappings expire and the LAN IP can change
-  # with DHCP. Requires UPnP enabled on the router; if it is not, upnpc fails
-  # harmlessly and the node runs outbound-only.
-  systemd.services.freenet-upnp = {
-    description = "UPnP port mapping for the Freenet peer";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.miniupnpc}/bin/upnpc -r 31337 UDP";
-    };
-  };
-  systemd.timers.freenet-upnp = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "1min";
-      OnUnitActiveSec = "5min";
-    };
-  };
 }
