@@ -45,6 +45,15 @@
 
       Only perform read-only Git commands (status, diff, log, show, branch) without asking; never perform Git write operations (commit, push, merge, rebase, reset, stash, checkout, tag) unless the user explicitly authorizes them in the current request. When the user authorizes a commit, first run `git status` and `git diff --staged` and verify the staged changes match the intent of the work — if they don't match, report the mismatch and ask before committing. When not authorized, orient and ask the user to perform the git operation.
 
+      ## Git diffs use difftastic
+
+      `git diff`, `git show`, and `git log -p` use difftastic (`diff.external=difft`), which outputs a syntax-aware format, not standard unified diffs. When you need regular diff output (for parsing, line-exact context, or piping into other tools), pass `--no-ext-diff`:
+
+      * `git diff --no-ext-diff` — plain unified diff
+      * `git show --no-ext-diff`, `git log -p --no-ext-diff`
+
+      Don't spend time decoding difftastic's output; prefer `--no-ext-diff` unless the syntax-aware view is explicitly useful.
+
       When writing or suggesting new code, evaluate the effort using the skill `evaluate-new-dep`.
 
       ## File editing
