@@ -75,6 +75,15 @@
       * If a command does not exist, it can be run with `devenv shell`, the "comma" command, or `nix-shell -p`.
       * If a file is not writable, stop and ask how to proceed.
       * There's a nixos MCP running for anything NixOS related.
+
+      ## Structural code search (ast-grep)
+
+      You are operating in an environment where `ast-grep` is installed. For any code
+      search that requires understanding of syntax or code structure (function boundaries,
+      nesting, call shapes, "find X inside Y"), default to `ast-grep` via bash:
+      `ast-grep run --lang [language] -p '<pattern>'`. Adjust `--lang` per language and
+      use `ast-grep outline` for a cheap structural map of a file before reading it fully.
+      Avoid text-only `grep` unless a plain-text search is explicitly requested.
     '';
     skills = {
       evaluate-new-dep = ''
@@ -88,6 +97,48 @@
         - Always suggest the most recent version.
         - Assess and report on the package quality, popularity and activity.
         - Compare with the effort, risk and advantages of implementing the funcionality directly on the code.
+      '';
+      # AST-aware structural code search. Ported from the official
+      # ast-grep/claude-skill repo (MIT) so every coding agent can learn the
+      # rule syntax on demand instead of hallucinating patterns.
+      ast-grep = ''
+        ---
+        name: ast-grep
+        description: Guide for writing ast-grep rules to perform structural code search and analysis. Use when searches depend on code structure (functions, nesting, call shapes) rather than plain text.
+        ---
+
+        # ast-grep Code Search
+
+        ## Overview
+        ast-grep matches code using Abstract Syntax Tree (AST) patterns, not text.
+        Prefer it over grep whenever a search depends on structure.
+
+        ## Workflow
+        1. Understand the query (language, pattern, edge cases).
+        2. Create a small example snippet that should match; save to a temp file.
+        3. Write the rule — start with `pattern`, add `kind` + relational rules
+           (`has`/`inside`) as needed. ALWAYS use `stopBy: end` in relational rules.
+        4. Test on the snippet:
+           echo "async function test() { await fetch(); }" | ast-grep scan --inline-rules 'id: test
+           language: javascript
+           rule:
+             kind: function_declaration
+             has:
+               pattern: await $EXAMPLE
+               stopBy: end' --stdin
+        5. Search the codebase:
+           ast-grep run --pattern 'console.log($ARG)' --lang javascript .
+           ast-grep scan --rule my_rule.yml /path/to/project
+           ast-grep scan --inline-rules '...' /path/to/project
+
+        ## Key tips
+        - Patterns match whole AST nodes; qualified paths (`std::env::var`) differ
+          from bare calls — try both.
+        - `--debug-query=pattern|cst` shows how a pattern parsed (debugging mismatches).
+        - `--json` prints a bare array; `range.start.line` is 0-based; named
+          metavariables live in `.metaVariables.single`, list ones in `.multi`.
+        - Escape metavariables in shell: `\$VAR` or single quotes.
+        - `ast-grep outline <file|dir>` prints a cheap structural map before reading.
       '';
     };
     settings = {
@@ -138,6 +189,16 @@
       agents = {
         build = {
           model = "neuralwatt/deepseek-v4.1-flash#high";
+          # ast-grep structural search (read-only) for locating definitions
+          # before validation. Allow placed AFTER rules that would deny it;
+          # last matching rule wins.
+          permissions = [
+            {
+              action = "bash";
+              resource = "ast-grep *";
+              effect = "allow";
+            }
+          ];
           # The V1 `options.fallback` lists are dropped: OpenCode 2.0.18 has
           # no fallback field in its config schema. They were:
           # opencode-go/deepseek-v4.1-flash, deepseek/deepseek-v4.1-flash,
@@ -275,6 +336,19 @@
               "-y"
               "chrome-devtools-mcp@latest"
               "--autoConnect"
+            ];
+          };
+          # ast-grep MCP server (EXPERIMENTAL, upstream warns) — structural
+          # search tools: dump_syntax_tree, test_match_code_rule, find_code,
+          # find_code_by_rule. Run from GitHub via uvx; no local clone needed.
+          # Uses the ast-grep binary from extraPackages.
+          ast-grep = {
+            type = "local";
+            command = [
+              "uvx"
+              "--from"
+              "git+https://github.com/ast-grep/ast-grep-mcp"
+              "ast-grep-server"
             ];
           };
         };
