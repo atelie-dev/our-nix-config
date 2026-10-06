@@ -6,13 +6,29 @@
     (pkgs.writeShellApplication {
       name = "do-nixos-upgrade";
       runtimeInputs = [
+        pkgs.nix
         pkgs.nix-output-monitor
         pkgs.nixos-rebuild-ng
       ];
       text = ''
         set -exo pipefail
         cd /etc/nixos
-        ${pkgs.nixos-rebuild-ng}/bin/nixos-rebuild switch --flake ".#$(hostname)" -v --log-format internal-json "$@" |& ${pkgs.nix-output-monitor}/bin/nom --json
+
+        recreate_lock=false
+        args=()
+        for arg in "$@"; do
+          if [[ "$arg" == "--recreate-lock-file" || "$arg" == "-u" ]]; then
+            recreate_lock=true
+          else
+            args+=("$arg")
+          fi
+        done
+
+        if [[ "$recreate_lock" == "true" ]]; then
+          nix flake update
+        fi
+
+        ${pkgs.nixos-rebuild-ng}/bin/nixos-rebuild switch --flake ".#$(hostname)" -v --log-format internal-json "''${args[@]}" |& ${pkgs.nix-output-monitor}/bin/nom --json
       '';
     })
 
