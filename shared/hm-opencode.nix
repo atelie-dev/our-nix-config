@@ -143,6 +143,9 @@
       '';
     };
     settings = {
+      # The binary is Nix-managed (read-only store): OpenCode's self-updater
+      # must never try to replace it. V2 field (V1 `autoupdate`).
+      update = "disable";
       default_agent = "core/opencoder";
       # V2: `plugin` became `plugins`. All plugins are local V2 ports in
       # plugins/ (auto-discovered) except the fallback engine, which gets
