@@ -23,6 +23,12 @@
     # nixpkgs and OpenCode CLI version. The flake also exposes the pinned
     # OpenCode 2.x CLI as packages.opencode-cli (used system-wide below).
     openchamber.url = "github:fabiob/openchamber?ref=feat/nix-flake";
+    # Build OpenChamber's pinned OpenCode CLI against our root nixpkgs
+    # instead of the stale nixpkgs locked inside anomalyco/opencode
+    # (April 2026). Does not change the CLI version — that stays pinned by
+    # openchamber's opencode input. Revert this line if the CLI build
+    # breaks against a newer nixpkgs.
+    openchamber.inputs.opencode.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

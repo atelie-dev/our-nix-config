@@ -27,8 +27,9 @@
 
   programs.opencode = {
     enable = true;
-    # Built by upstream's own flake (anomalyco/opencode, dev branch) and
-    # exposed through the shared overlay in cli-tools.nix; replaces the old
+    # OpenChamber's pinned OpenCode 2.x CLI (anomalyco/opencode v2.0.18),
+    # built by openchamber's flake against our root nixpkgs and exposed
+    # through the shared overlay in cli-tools.nix; replaces the old
     # nixpkgs package + bun 1.3.13 pin.
     package = pkgs.opencode-flake;
     extraPackages = [
