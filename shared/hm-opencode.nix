@@ -221,8 +221,9 @@
           # deepseek/deepseek-v4.1-flash
         };
         explore = {
-          # Subagent: flex tier (deferrable, 0.65x energy).
-          model = "neuralwatt/glm-5.3-flash-flex";
+          # User-facing quick queries: standard tier + balanced reasoning so
+          # exploration stays snappy (volume is low, cost impact negligible).
+          model = "neuralwatt/glm-5.3-flash#high";
           # V1 {edit, write} = deny collapses to the V2 `edit` action
           # (write/patch merged into edit).
           permissions = [
