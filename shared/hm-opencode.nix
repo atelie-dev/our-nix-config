@@ -25,6 +25,21 @@
     };
   };
 
+  # OpenChamber (desktop app, VS Code extension) reads OPENCODE_BINARY to
+  # decide which opencode executable to run. Point it at the hm profile's
+  # wrapped binary — the same build the opencode-web unit runs — so there is
+  # exactly one opencode everywhere and the extraPackages PATH (ast-grep,
+  # shellcheck, nodejs) is available to the tools OpenChamber's managed
+  # server spawns (MCP servers, formatters).
+  # Written straight into environment.d: home.sessionVariables only reaches
+  # login shells on NixOS, while environment.d is imported by the systemd
+  # user manager (verified via LOCALE_ARCHIVE_2_27 in
+  # `systemctl --user show-environment`), so gnome-shell-launched apps
+  # inherit it. Activation: rebuild, re-login (environment.d is read at
+  # user-session start), then restart OpenChamber.
+  xdg.configFile."environment.d/10-opencode.conf".text =
+    "OPENCODE_BINARY=${config.home.profileDirectory}/bin/opencode\n";
+
   programs.opencode = {
     enable = true;
     # OpenChamber's pinned OpenCode 2.x CLI (anomalyco/opencode v2.0.18),
@@ -41,6 +56,24 @@
       # that used to sit here is gone: OpenCode 2 no longer runs LSPs.)
       pkgs.shellcheck
     ];
+    # Neutral shared OpenCode service: a systemd user unit running
+    # `opencode serve --service` with a minimal, project-agnostic
+    # environment (systemd user manager + home-profile PATH). This is the
+    # server the TUI and `opencode api` auto-discover, so its environment is
+    # what agent shells inherit. Starting it from systemd — instead of from
+    # whichever project shell happened to run `opencode` first — stops one
+    # project's direnv/devenv environment from being baked in for every
+    # other project. Requires home-manager's programs.opencode.web module,
+    # which is newer than the currently pinned home-manager revision:
+    # run `nix flake update home-manager` before rebuilding.
+    # After it exists, prefer `systemctl --user restart opencode-web` over
+    # `opencode service restart`: the latter respawns the service as a child
+    # of the calling shell and re-bakes that shell's environment (the unit's
+    # Restart=always self-heals it within seconds).
+    web = {
+      enable = true;
+      extraArgs = [ "--service" ];
+    };
     context = ''
       # General rules
 

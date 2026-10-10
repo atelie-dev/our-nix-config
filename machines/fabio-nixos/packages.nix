@@ -7,12 +7,13 @@
 
 {
   # OpenChamber trial (github:fabiob/openchamber feat-nix-flake, upstream PR
-  # pending): the Electron desktop GUI in system packages and the server as
-  # a systemd service on 127.0.0.1:3000 (state in /var/lib/openchamber).
-  # Remove this block (or set services.openchamber.enable = false) to stop
-  # the trial; the flake input stays harmless either way.
+  # pending): the Electron desktop GUI in system packages. The headless
+  # services.openchamber server (127.0.0.1:3000, state in /var/lib/openchamber)
+  # was disabled on 2026-10-10: the desktop app is self-contained (its own
+  # embedded server + managed OpenCode), so the service only duplicated an
+  # OpenCode server. Re-enable if an always-on browser UI is ever wanted.
   imports = [ inputs.openchamber.nixosModules.default ];
-  services.openchamber.enable = true;
+  services.openchamber.enable = false;
 
   # Enables the GPaste clipboard manager
   programs.gpaste.enable = true;
