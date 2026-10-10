@@ -67,11 +67,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791306979,
-        "narHash": "sha256-KuLePuhwJM9NLt/gTLHzXaOoSZKGoB3m7NfXjiQ98HY=",
+        "lastModified": 1791569574,
+        "narHash": "sha256-5sViLmjhTCtBTvhjSXXvd5LDrAFMydFFKZQisjE8Vds=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "fae6e9e42c3b762ab47635cddcfaf6f52374a61b",
+        "rev": "6b88c12cc6d234de4888f5d21076fb11199d0844",
         "type": "github"
       },
       "original": {
@@ -119,11 +119,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1791260994,
-        "narHash": "sha256-Miqqk/ammqnTUxaoCyvtwoPeLbI1ksFyLxi/CazZpWY=",
+        "lastModified": 1791456040,
+        "narHash": "sha256-H83yz/do+hjOO0uujHyH8RgtIQP2v7Mw+cLwcZK/xKc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "151fa4e8ddfdd8dd25d945ad94ed54a13de9f6e4",
+        "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
         "type": "github"
       },
       "original": {
@@ -155,11 +155,11 @@
         "opencode": "opencode"
       },
       "locked": {
-        "lastModified": 1791410651,
-        "narHash": "sha256-Z7+qAsTn7bQpDltwVQ5jAj4at7BVZjBMwfL3nvE1+cc=",
+        "lastModified": 1791568739,
+        "narHash": "sha256-sMpvebD/4JjmGIV+cGRXptfzE304Pclb8PFI/finvK4=",
         "owner": "fabiob",
         "repo": "openchamber",
-        "rev": "a3481c65a1b780c47ef6ef320604a5ad6e734d57",
+        "rev": "162640ee513fa5240588e198f1e8be649723d93b",
         "type": "github"
       },
       "original": {
@@ -176,16 +176,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790380652,
-        "narHash": "sha256-QyzzA9SUnnCunYucJPjZAw/EkUN1EKoDcrFalIOYVps=",
+        "lastModified": 1791450968,
+        "narHash": "sha256-1q90OvTRg0Jdf46L1M2YY2CwGRC3ypJ3O5JF4WqYqvY=",
         "owner": "anomalyco",
         "repo": "opencode",
-        "rev": "cd9a14a6b688d4021bee381dfd39d2cef9c0f862",
+        "rev": "b44eea9e204024db2b480a136ece29d790d5f593",
         "type": "github"
       },
       "original": {
         "owner": "anomalyco",
-        "ref": "v2.0.18",
+        "ref": "v2.0.25",
         "repo": "opencode",
         "type": "github"
       }
