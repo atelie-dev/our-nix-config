@@ -7,13 +7,19 @@
 
 {
   # OpenChamber trial (github:fabiob/openchamber feat-nix-flake, upstream PR
-  # pending): the Electron desktop GUI in system packages. The headless
-  # services.openchamber server (127.0.0.1:3000, state in /var/lib/openchamber)
-  # was disabled on 2026-10-10: the desktop app is self-contained (its own
-  # embedded server + managed OpenCode), so the service only duplicated an
-  # OpenCode server. Re-enable if an always-on browser UI is ever wanted.
+  # pending): the Electron desktop GUI in system packages plus the always-on
+  # browser UI as a systemd service (127.0.0.1:3000, state under the user's
+  # HOME, seeing the same projects/ssh/opencode config as a manual run).
+  # The UI password file is created locally per machine (~/.config/openchamber/
+  # ui-password, 0600) instead of sops, so rotating it needs no rebuild:
+  # edit the file, then `systemctl restart openchamber`. A missing file fails
+  # the service start by design (fail-closed) — create it before enabling.
   imports = [ inputs.openchamber.nixosModules.default ];
-  services.openchamber.enable = false;
+  services.openchamber = {
+    enable = true;
+    user = "fabio";
+    uiPasswordFile = "/home/fabio/.config/openchamber/ui-password";
+  };
 
   # Enables the GPaste clipboard manager
   programs.gpaste.enable = true;
