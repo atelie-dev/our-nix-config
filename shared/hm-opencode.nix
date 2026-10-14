@@ -180,6 +180,11 @@
       # must never try to replace it. V2 field (V1 `autoupdate`).
       update = "disable";
       default_agent = "core/opencoder";
+      # Default is 1, which blocks ALL nested subagent calls (e.g.
+      # OpenDevopsSpecialist -> subagents/core/contextscout, per its
+      # context_first rule). 2 lets depth-1 subagents spawn read-only
+      # scouts; the permission system still gates which agents may nest.
+      experimental.subagent_depth = 2;
       # V2: `plugin` became `plugins`. All plugins are local V2 ports in
       # plugins/ (auto-discovered) except the fallback engine, which gets
       # its per-agent fallback chains via plugin options. The two V1
