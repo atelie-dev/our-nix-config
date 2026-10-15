@@ -155,11 +155,11 @@
         "opencode": "opencode"
       },
       "locked": {
-        "lastModified": 1792001236,
-        "narHash": "sha256-+YJofvyrol+1tKbmA6diOPmpjRXwqKqTWqNMKACSmIE=",
+        "lastModified": 1792036699,
+        "narHash": "sha256-E3Lf/isS4ORP3d1AhOz+3iXqiIoONWRajVHD2BaU7eg=",
         "owner": "fabiob",
         "repo": "openchamber",
-        "rev": "b5f02debd5d5f594667d5420e37701a3e0dca9a7",
+        "rev": "bb8d5072691ea4c2b9f76aed14d24373fd60a0ee",
         "type": "github"
       },
       "original": {
@@ -176,16 +176,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791879458,
-        "narHash": "sha256-7bpaROwB9JYucjqOKh92oWi2iuYmo7pXyUxYKgj4OkI=",
+        "lastModified": 1791968597,
+        "narHash": "sha256-qfT8gQCyGahr5v7v95wNArXrBOAnfQZja1WyJkaCpJI=",
         "owner": "anomalyco",
         "repo": "opencode",
-        "rev": "026b106bc5d41b679ffc413264229c340871e4d3",
+        "rev": "042d0832f5f3a73eaa039a58a7d565776f6d4290",
         "type": "github"
       },
       "original": {
         "owner": "anomalyco",
-        "ref": "v2.0.28",
+        "ref": "v2.0.29",
         "repo": "opencode",
         "type": "github"
       }
