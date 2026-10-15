@@ -42,10 +42,6 @@
 
   programs.opencode = {
     enable = true;
-    # OpenChamber's pinned OpenCode 2.x CLI (anomalyco/opencode v2.0.18),
-    # built by openchamber's flake against our root nixpkgs and exposed
-    # through the shared overlay in cli-tools.nix; replaces the old
-    # nixpkgs package + bun 1.3.13 pin.
     package = pkgs.opencode-flake;
     extraPackages = [
       pkgs.nodejs_24
@@ -63,10 +59,7 @@
     # what agent shells inherit. Starting it from systemd — instead of from
     # whichever project shell happened to run `opencode` first — stops one
     # project's direnv/devenv environment from being baked in for every
-    # other project. Requires home-manager's programs.opencode.web module,
-    # which is newer than the currently pinned home-manager revision:
-    # run `nix flake update home-manager` before rebuilding.
-    # After it exists, prefer `systemctl --user restart opencode-web` over
+    # other project. After it exists, prefer `systemctl --user restart opencode-web` over
     # `opencode service restart`: the latter respawns the service as a child
     # of the calling shell and re-bakes that shell's environment (the unit's
     # Restart=always self-heals it within seconds).
