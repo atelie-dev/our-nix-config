@@ -19,6 +19,7 @@
     ../../shared/logitech.nix
     ../../shared/no-sleep.nix
     ../../shared/binary-cache-server.nix
+    ./wireguard-eveo.nix
   ];
 
   networking.hostName = "fabio-nixos"; # Define your hostname.
